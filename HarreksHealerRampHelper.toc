@@ -1,0 +1,10 @@
+## Interface: 110100
+## Version: 1.0.0
+## Title: Harreks Healer Ramp Helper
+## IconTexture: 450907
+## Notes: Tool to help healers ramp
+## Author: Harrek
+
+ClassData/Preservation.lua
+Data.lua
+HarreksHealerRampHelper.lua
