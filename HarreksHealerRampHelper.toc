@@ -4,7 +4,11 @@
 ## IconTexture: 450907
 ## Notes: Tool to help healers ramp
 ## Author: Harrek
+## SavedVariables: HarreksHealerRampHelperDB
 
+libs/LibStub.lua
+ClassData/Discipline.lua
 ClassData/Preservation.lua
 Data.lua
+Options.lua
 HarreksHealerRampHelper.lua

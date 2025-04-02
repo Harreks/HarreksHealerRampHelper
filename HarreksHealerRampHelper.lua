@@ -48,11 +48,11 @@ print("Init Loaded");
 
 --TEST
 local testTimers = {
-    ['stasis'] = {
+    ['Stasis'] = {
         "30",
         "1:30"
     },
-    ['ec'] = {
+    ['EC'] = {
         "2:00"
     }
 }
@@ -112,7 +112,7 @@ function ns:SetupTimings()
         ['dynamic'] = {}
     }
     local rampTypesTable = ns[specName]['rampTypes']()
-    for type, timings in pairs(testTimers) do
+    for type, timings in pairs(testTimers) do --CHANGE TEST TIMERS FOR ACTUAL ONES
         for k, timing in ipairs(timings) do
             timing = ns:FormatTime(timing)
             if tonumber(timing) > 0 then

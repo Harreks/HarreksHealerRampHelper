@@ -18,7 +18,7 @@ ns['Preservation'] = {
 
 ns['Preservation']['rampTypes'] = function()
     return {
-        ['stasis'] = {
+        ['Stasis'] = {
             {
                 ['text'] = 'Save Engulfs',
                 ['icon'] = 5927629,
@@ -29,7 +29,7 @@ ns['Preservation']['rampTypes'] = function()
             {
                 ['text'] = 'Save TA',
                 ['icon'] = 4630480,
-                ['offset'] = 18 + ns['Preservation']['spells'][373861]['cd']
+                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or 0)
             },
             {
                 ['text'] = 'Save DB',
@@ -53,12 +53,12 @@ ns['Preservation']['rampTypes'] = function()
                 ['offset'] = 0
             }
         },
-        ['ec'] = {
+        ['EC'] = {
             {
                 ['text'] = 'Save TA',
                 ['icon'] = 4630480,
                 ['dynamic'] = false,
-                ['offset'] = 18 + ns['Preservation']['spells'][373861]['cd']
+                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or 0)
             },
             {
                 ['text'] = 'Start Ramping',
