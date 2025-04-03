@@ -15,3 +15,14 @@ ns.bosses = {
     [3015] = "Mug'zee",
     [3016] = "Chrome King Gallywix",
 }
+
+ns.difficulties = {
+    [15] = {
+        ["slug"] = "hero",
+        ["name"] = "Heroic"
+    },
+    [16] = {
+        ["slug"] = "myth",
+        ["name"] = "Mythic"
+    }
+}

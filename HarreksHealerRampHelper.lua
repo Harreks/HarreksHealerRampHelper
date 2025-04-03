@@ -29,44 +29,37 @@ infoFrame.timer:SetPoint("CENTER", 0, 15)
 infoFrame.timer:SetScale(2.5)
 infoFrame.timer:SetShadowColor(0, 0, 0, 1)
 infoFrame.timer:SetShadowOffset(-2, -2)
+ns.infoFrame = infoFrame
 --Timer Frames
 local startTimer = CreateFrame("Frame"); --The frame that runs the functions on encounter start
-startTimer:RegisterEvent("PLAYER_REGEN_DISABLED"); --Replace with ENCOUNTER_START
-startTimer:SetScript("OnEvent", function()
-    ns:SetPlayerSpec()
-    if specSupported then
-        ns:SetupTimings()
-        ns:StartTimer()
+startTimer:RegisterEvent("PLAYER_REGEN_DISABLED");
+startTimer:RegisterEvent("ENCOUNTER_START");
+startTimer:SetScript("OnEvent", function(_, event, encounterId, _, difficultyId)
+    if event == "ENCOUNTER_START" or (event == "PLAYER_REGEN_DISABLED" and HarreksRampHelperDB.testing.testMode) then
+        ns:SetPlayerSpec()
+        if specSupported then
+            ns:SetupTimings(event, encounterId, difficultyId)
+            ns:StartTimer()
+        end
     end
 end)
 local stopTimer = CreateFrame("Frame"); --Frame that stops the timer on encounter end
-stopTimer:RegisterEvent("PLAYER_REGEN_ENABLED"); --Replace with ENCOUNTER_END
-stopTimer:SetScript("OnEvent", function()
-    ns:StopTimer()
+stopTimer:RegisterEvent("ENCOUNTER_END");
+stopTimer:RegisterEvent("PLAYER_REGEN_ENABLED");
+stopTimer:SetScript("OnEvent", function(_, event)
+    if event == "ENCOUNTER_END" or (event == "PLAYER_REGEN_ENABLED" and HarreksRampHelperDB.testing.testMode) then
+        ns:StopTimer()
+    end
 end)
-print("Init Loaded");
-
---TEST
-local testTimers = {
-    ['Stasis'] = {
-        "30",
-        "1:30"
-    },
-    ['EC'] = {
-        "2:00"
-    }
-}
---TEST
 
 --[[Timer Functions]]--
 --When encounter starts, this function starts the fight timer and creates a ticker to check twice every second if any assignment is due to be shown
-function ns:StartTimer(_, encounterID)
+function ns:StartTimer()
     timerStartTime = GetTime()
     timerRunning = true
     runningTimer = C_Timer.NewTicker(0.5, function()
         currentTimer = GetTime() - timerStartTime
         local formattedTime = ns:CutDecimals(currentTimer)
-        --print(formattedTime)
         if ns.fightAssignments['static'][formattedTime] and not ns.fightAssignments['static'][formattedTime]['loaded'] then
             ns:ShowAssignment(ns.fightAssignments['static'][formattedTime], formattedTime)
             ns.fightAssignments['static'][formattedTime]['loaded'] = true
@@ -88,7 +81,6 @@ end
 function ns:SetPlayerSpec()
     local specId = GetSpecializationInfo(GetSpecialization())
     specName = ns.specs[specId]
-    print(specName)
     if specName then
         specSupported = true
         local haste = GetHaste() / 1000
@@ -106,18 +98,24 @@ end
 
 --[[Assignment Functions]]--
 --Creates the assignments to be displayed, using info from the spec file. static assignments run on a fixed time and dynamic assignments depend on a charged spell cooldown
-function ns:SetupTimings()
+function ns:SetupTimings(event, encounterId, difficultyId)
     ns.fightAssignments = {
         ['static'] = {},
         ['dynamic'] = {}
     }
     local rampTypesTable = ns[specName]['rampTypes']()
-    for type, timings in pairs(testTimers) do --CHANGE TEST TIMERS FOR ACTUAL ONES
-        for k, timing in ipairs(timings) do
-            timing = ns:FormatTime(timing)
-            if tonumber(timing) > 0 then
-                for k, assignment in ipairs(rampTypesTable[type]) do
-                    local assignmentTime = timing - assignment['offset']
+    for type, _ in pairs(rampTypesTable) do
+        local fightTimings
+        if event == "ENCOUNTER_START" then
+            fightTimings =  HarreksRampHelperDB[specName][ns.difficulties[difficultyId]['slug']][encounterId][type]
+        elseif HarreksRampHelperDB.testing.testMode then
+            fightTimings = HarreksRampHelperDB[specName].testTimers[type]
+        end
+        fightTimings = ns:ConvertTimesToTable(fightTimings)
+        for _, timing in pairs(fightTimings) do
+            for _, assignment in pairs(rampTypesTable[type]) do
+                local assignmentTime = ns:CutDecimals(timing - assignment['offset'])
+                if assignmentTime >= 0 then
                     if assignment['dynamic'] then
                         ns.fightAssignments['dynamic'][assignmentTime] = {
                             ['text'] = assignment['text'],
@@ -137,7 +135,6 @@ function ns:SetupTimings()
             end
         end
     end
-    DevTools_Dump(ns.fightAssignments)
 end
 
 --The time to show a dynamic assignment depends on how you are using the charges, this compares the potential cooldown of the spell with the remaining time before the assignment to see if it should be shown
@@ -195,21 +192,25 @@ function ns:SendTts(text)
 end
 
 --[[Format Functions]]--
---Formats time to convert from min:sec into seconds. If the time is already in seconds, it returns the value as is
-function ns:FormatTime(time)
-    if string.find(time, ':') then
-        local timeSplit = {}
-        for val in time:gmatch("([^:]+)") do
-            table.insert(timeSplit, tonumber(val))
-        end
-        time = timeSplit[1] * 60 + timeSplit[2]
-        return time
-    else
-        return time
-    end
-end
-
 --Removes decimals from a number
 function ns:CutDecimals(time)
     return tonumber(string.format('%.0f', time))
+end
+
+--Convert a string of times separated by new lines into a table
+function ns:ConvertTimesToTable(timeString)
+    local timesTable = {}
+    if timeString then
+        for time in timeString:gmatch("[^\r\n]+") do
+            if string.find(time, ':') then
+                local timeSplit = {}
+                for val in time:gmatch("([^:]+)") do
+                    table.insert(timeSplit, tonumber(val))
+                end
+                time = timeSplit[1] * 60 + timeSplit[2]
+            end
+            table.insert(timesTable, tonumber(time))
+        end
+    end
+    return timesTable
 end

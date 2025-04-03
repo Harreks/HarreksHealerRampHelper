@@ -27,9 +27,9 @@ ns['Preservation']['rampTypes'] = function()
                 ['offset'] = 0
             },
             {
-                ['text'] = 'Save TA',
+                ['text'] = 'Save T A',
                 ['icon'] = 4630480,
-                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or 0)
+                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },
             {
                 ['text'] = 'Save DB',
@@ -55,15 +55,13 @@ ns['Preservation']['rampTypes'] = function()
         },
         ['EC'] = {
             {
-                ['text'] = 'Save TA',
+                ['text'] = 'Save T A',
                 ['icon'] = 4630480,
-                ['dynamic'] = false,
-                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or 0)
+                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },
             {
                 ['text'] = 'Start Ramping',
                 ['icon'] = 4630480,
-                ['dynamic'] = false,
                 ['offset'] = 18
             },
             {
