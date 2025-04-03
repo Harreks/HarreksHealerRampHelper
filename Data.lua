@@ -3,6 +3,7 @@ local _, ns = ...
 ns.specs = {
     [1468] = "Preservation",
     [256] = "Discipline",
+    [105] = "RestoDruid"
 }
 
 ns.bosses = {

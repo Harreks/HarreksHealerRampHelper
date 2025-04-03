@@ -11,25 +11,20 @@ local specName = nil
 local specSupported = false
 ns.fightAssignments = {}
 --Display Frames
-local infoFrame = CreateFrame("FRAME", nil, UIParent) --The info frame is the containter for the whole display
-infoFrame:SetWidth(1)
-infoFrame:SetHeight(1)
-infoFrame:SetPoint("CENTER", 0, 200)
-infoFrame:SetFrameStrata("TOOLTIP")
-infoFrame.text = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight") --Text is the text that will be displayed
-infoFrame.text:SetPoint("CENTER")
-infoFrame.text:SetScale(2)
-infoFrame.text:SetShadowColor(0, 0, 0, 1)
-infoFrame.text:SetShadowOffset(-2, -2)
-infoFrame.icon = infoFrame:CreateTexture(nil, "OVERLAY") --Icon that will be displayed
-infoFrame.icon:SetSize(48, 48)
-infoFrame.icon:SetPoint("CENTER", 0, 40)
-infoFrame.timer = infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight") --Timer to be shown for the assignments marked with showTimer
-infoFrame.timer:SetPoint("CENTER", 0, 15)
-infoFrame.timer:SetScale(2.5)
-infoFrame.timer:SetShadowColor(0, 0, 0, 1)
-infoFrame.timer:SetShadowOffset(-2, -2)
-ns.infoFrame = infoFrame
+ns.infoFrame = CreateFrame("FRAME", nil, UIParent) --The info frame is the container for the whole display
+ns.infoFrame:SetWidth(1)
+ns.infoFrame:SetHeight(1)
+ns.infoFrame:SetFrameStrata("TOOLTIP")
+ns.infoFrame.text = ns.infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight") --Text is the text that will be displayed
+ns.infoFrame.text:SetPoint("CENTER", ns.infoFrame, "CENTER") --Attached to the info frame, in the center
+ns.infoFrame.text:SetShadowColor(0, 0, 0, 1)
+ns.infoFrame.text:SetShadowOffset(-2, -2)
+ns.infoFrame.icon = ns.infoFrame:CreateTexture(nil, "OVERLAY") --Icon that will be displayed
+ns.infoFrame.icon:SetPoint("CENTER", ns.infoFrame, "CENTER", 0, 40) --Attached to the info frame, in the center 40px upwards
+ns.infoFrame.timer = ns.infoFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight") --Timer to be shown for the assignments marked with showTimer
+ns.infoFrame.timer:SetPoint("CENTER", ns.infoFrame.icon, "CENTER") --Attached to the icon, in the center
+ns.infoFrame.timer:SetShadowColor(0, 0, 0, 1)
+ns.infoFrame.timer:SetShadowOffset(-2, -2)
 --Timer Frames
 local startTimer = CreateFrame("Frame"); --The frame that runs the functions on encounter start
 startTimer:RegisterEvent("PLAYER_REGEN_DISABLED");
@@ -99,6 +94,8 @@ end
 --[[Assignment Functions]]--
 --Creates the assignments to be displayed, using info from the spec file. static assignments run on a fixed time and dynamic assignments depend on a charged spell cooldown
 function ns:SetupTimings(event, encounterId, difficultyId)
+    ns:ResetDisplay()
+    --Init fight assignments Table
     ns.fightAssignments = {
         ['static'] = {},
         ['dynamic'] = {}
@@ -166,24 +163,34 @@ end
 --[[Display Functions]]--
 --Showing an assignment involved updating the icon and text of the infoFrame, and sending the text as TTS. The timer is shown if the assignment has the showTimer flag set to true
 function ns:ShowAssignment(assignment, displayTime)
-    infoFrame.text:SetText(assignment['text'])
-    infoFrame.icon:SetTexture(assignment['icon'])
-    ns:SendTts(assignment['text'])
+    ns.infoFrame.text:SetText(assignment['text'])
+    ns.infoFrame.icon:SetTexture(assignment['icon'])
+    ns:SendTts(assignment['tts'] or assignment['text'])
     local showTimer = nil
     if assignment['showTimer'] then
         showTimer = C_Timer.NewTicker(0.01, function()
-            infoFrame.timer:SetText((string.format('%.1f', (displayTime + 3) - (GetTime() - timerStartTime))))
+            ns.infoFrame.timer:SetText((string.format('%.1f', (displayTime + 3) - (GetTime() - timerStartTime))))
         end)
     end
     C_Timer.NewTimer(3, function()
-        infoFrame.text:SetText("")
-        infoFrame.icon:SetTexture(nil)
+        ns.infoFrame.text:SetText("")
+        ns.infoFrame.icon:SetTexture(nil)
         if showTimer then
             showTimer:Cancel()
-            infoFrame.timer:SetText("")
+            ns.infoFrame.timer:SetText("")
         end
     end)
+end
 
+--Re init display in case settings changed
+function ns:ResetDisplay()
+    ns.infoFrame:ClearAllPoints()
+    ns.infoFrame:SetPoint("CENTER", HarreksRampHelperDB.options.framePositionX, HarreksRampHelperDB.options.framePositionY)
+    local text, icon, timer = '', 0, ''
+    ns.infoFrame.text:SetText(text)
+    ns.infoFrame.icon:SetTexture(icon)
+    ns.infoFrame.timer:SetText(timer)
+    HarreksRampHelperDB.options.toggleDisplay = false
 end
 
 --Sends a TTS message with some predefined parameters

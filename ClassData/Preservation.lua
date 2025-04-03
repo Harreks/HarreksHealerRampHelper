@@ -27,7 +27,8 @@ ns['Preservation']['rampTypes'] = function()
                 ['offset'] = 0
             },
             {
-                ['text'] = 'Save T A',
+                ['text'] = 'Save TA',
+                ['tts'] = 'Save T A',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },
@@ -55,7 +56,8 @@ ns['Preservation']['rampTypes'] = function()
         },
         ['EC'] = {
             {
-                ['text'] = 'Save T A',
+                ['text'] = 'Save TA',
+                ['tts'] = 'Save T A',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },
@@ -75,6 +77,19 @@ ns['Preservation']['rampTypes'] = function()
                 ['icon'] = 4630447,
                 ['offset'] = 0
             }
+        },
+        ['Stasis Release'] = {
+            {
+                ['text'] = 'Release Stasis',
+                ['icon'] = 4630476,
+                ['offset'] = 0
+            },
+            {
+                ['text'] = 'Release Soon',
+                ['icon'] = 4630476,
+                ['offset'] = 3,
+                ['showTimer'] = true
+            },
         }
     }
 end
