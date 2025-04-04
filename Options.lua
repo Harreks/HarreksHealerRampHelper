@@ -11,7 +11,11 @@ local defaultOptions = {
         ['textSize'] = 2,
         ['timerSize'] = 2.5,
         ['iconSizeW'] = 48,
-        ['iconSizeH'] = 48
+        ['iconSizeH'] = 48,
+        ['ttsEnabled'] = true,
+        ['ttsVoice'] = 1,
+        ['ttsRate'] = -1,
+        ['ttsVolume'] = 100
     }
 }
 
@@ -39,6 +43,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
         ns.infoFrame.text:SetScale(HarreksRampHelperDB.options.textSize)
         ns.infoFrame.timer:SetScale(HarreksRampHelperDB.options.timerSize)
         ns.infoFrame.icon:SetSize(HarreksRampHelperDB.options.iconSizeW, HarreksRampHelperDB.options.iconSizeH)
+        local defaultOptionWidth = 1.25
         ns:ResetDisplay()
 
         --Initialize options table
@@ -136,7 +141,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         toggleDisplay = {
                             type = "execute",
                             name = "Toggle Display",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             order = 1,
                             func = function()
                                 local showing = HarreksRampHelperDB.options.toggleDisplay
@@ -156,7 +161,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         resetDefaults = {
                             type = "execute",
                             name = "Reset Default Settings",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             order = 2,
                             func = function()
                                 for option, defaultValue in pairs(defaultOptions.options) do
@@ -176,7 +181,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         framePositionX = {
                             type = "range",
                             name = "Display X Position",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             softMin = -1000,
                             softMax = 1000,
                             order = 11,
@@ -192,7 +197,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         framePositionY = {
                             type = "range",
                             name = "Display Y Position",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             softMin = -1000,
                             softMax = 1000,
                             order = 12,
@@ -213,7 +218,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         textSize = {
                             type = "range",
                             name = "Main Text Size",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             min = 0.5,
                             softMin = 0.5,
                             max = 5,
@@ -230,7 +235,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         timerSize = {
                             type = "range",
                             name = "Timer Text Size",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             min = 0.5,
                             softMin = 0.5,
                             max = 5,
@@ -247,7 +252,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         iconSizeW = {
                             type = "range",
                             name = "Icon Width",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             min = 10,
                             softMin = 10,
                             max = 200,
@@ -264,7 +269,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         iconSizeH = {
                             type = "range",
                             name = "Icon Height",
-                            width = 1.3,
+                            width = defaultOptionWidth,
                             min = 10,
                             softMin = 10,
                             max = 200,
@@ -277,6 +282,72 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 HarreksRampHelperDB.options.iconSizeH = size
                                 ns.infoFrame.icon:SetSize(HarreksRampHelperDB.options.iconSizeW, size)
                             end
+                        },
+                        ttsHeader = {
+                            type = "header",
+                            name = "Text to Speech",
+                            order = 30
+                        },
+                        ttsPlay = {
+                            type = "execute",
+                            name = "Play Voice",
+                            desc = "Plays a message to test the TTS. This won't work if TTS is disabled",
+                            width = defaultOptionWidth,
+                            order = 31,
+                            func = function()
+                                ns:SendTts('Healer Ramp Helper')
+                            end
+                        },
+                        ttsEnabled = {
+                            type = "toggle",
+                            name = "Enable Text to Speech",
+                            width = defaultOptionWidth,
+                            order = 32,
+                            get = function() return HarreksRampHelperDB.options.ttsEnabled end,
+                            set = function(_, ttsEnabled) HarreksRampHelperDB.options.ttsEnabled = ttsEnabled end
+                        },
+                        ttsVoice = {
+                            type = "select",
+                            name = "Voice",
+                            width = defaultOptionWidth,
+                            order = 33,
+                            values = function()
+                                local voices = {}
+                                for _, voice in pairs(C_VoiceChat.GetTtsVoices()) do
+                                    voices[voice.voiceID] = voice.name
+                                end
+                                return voices
+                            end,
+                            get = function() return HarreksRampHelperDB.options.ttsVoice end,
+                            set = function(_, voice) HarreksRampHelperDB.options.ttsVoice = voice end
+                        },
+                        ttsRate = {
+                            type = "range",
+                            name = "Rate",
+                            width = defaultOptionWidth,
+                            min = -10,
+                            softMin = -10,
+                            max = 10,
+                            softMax = 10,
+                            order = 34,
+                            step = 1,
+                            bigStep = 0.5,
+                            get = function() return HarreksRampHelperDB.options.ttsRate end,
+                            set = function(_, rate) HarreksRampHelperDB.options.ttsRate = rate end
+                        },
+                        ttsVolume = {
+                            type = "range",
+                            name = "Volume",
+                            width = defaultOptionWidth,
+                            min = 0,
+                            softMin = 0,
+                            max = 100,
+                            softMax = 100,
+                            order = 35,
+                            step = 1,
+                            bigStep = 5,
+                            get = function() return HarreksRampHelperDB.options.ttsVolume end,
+                            set = function(_, volume) HarreksRampHelperDB.options.ttsVolume = volume end
                         }
                     }
                 },
@@ -339,7 +410,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                 }
             }
             --For each difficulty in the data file
-            for _, diff in pairs(ns.difficulties) do
+            for diffId, diff in pairs(ns.difficulties) do
                 local diffSlug = diff.slug
                 local diffName = diff.name
                 --Check HarreksRampHelperDB if this difficulty exists for this spec
@@ -350,6 +421,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                 specTable.args.fights.args[diffSlug] = {
                     type = "group",
                     name = diffName,
+                    order = 100 - diffId, --higher diff id shows up first, so mythic shows before heroic
                     args = {}
                 }
                 --For each encounter in the data file

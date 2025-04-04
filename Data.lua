@@ -1,5 +1,6 @@
 local _, ns = ...
 
+--https://warcraft.wiki.gg/wiki/SpecializationID
 ns.specs = {
     [1468] = "Preservation",
     [256] = "Discipline",

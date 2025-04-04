@@ -28,7 +28,7 @@ ns['Preservation']['rampTypes'] = function()
             },
             {
                 ['text'] = 'Save TA',
-                ['tts'] = 'Save T A',
+                ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },
@@ -57,7 +57,7 @@ ns['Preservation']['rampTypes'] = function()
         ['EC'] = {
             {
                 ['text'] = 'Save TA',
-                ['tts'] = 'Save T A',
+                ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
             },

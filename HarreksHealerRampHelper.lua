@@ -104,7 +104,8 @@ function ns:SetupTimings(event, encounterId, difficultyId)
     for type, _ in pairs(rampTypesTable) do
         local fightTimings
         if event == "ENCOUNTER_START" then
-            fightTimings =  HarreksRampHelperDB[specName][ns.difficulties[difficultyId]['slug']][encounterId][type]
+            local difficultySlug = ns.difficulties[difficultyId]['slug']
+            fightTimings =  HarreksRampHelperDB[specName][difficultySlug][tostring(encounterId)][type]
         elseif HarreksRampHelperDB.testing.testMode then
             fightTimings = HarreksRampHelperDB[specName].testTimers[type]
         end
@@ -118,14 +119,16 @@ function ns:SetupTimings(event, encounterId, difficultyId)
                             ['text'] = assignment['text'],
                             ['icon'] = assignment['icon'],
                             ['loaded'] = false,
-                            ['spellId'] = assignment['spellId']
+                            ['spellId'] = assignment['spellId'],
+                            ['tts'] = assignment['tts'] or nil
                         }
                     else
                         ns.fightAssignments['static'][assignmentTime] = {
                             ['text'] = assignment['text'],
                             ['icon'] = assignment['icon'],
                             ['loaded'] = false,
-                            ['showTimer'] = assignment['showTimer']
+                            ['showTimer'] = assignment['showTimer'],
+                            ['tts'] = assignment['tts'] or nil
                         }
                     end
                 end
@@ -195,7 +198,9 @@ end
 
 --Sends a TTS message with some predefined parameters
 function ns:SendTts(text)
-    C_VoiceChat.SpeakText(1, text, Enum.VoiceTtsDestination.LocalPlayback, -1, 100)
+    if HarreksRampHelperDB.options.ttsEnabled then
+        C_VoiceChat.SpeakText(HarreksRampHelperDB.options.ttsVoice, text, Enum.VoiceTtsDestination.LocalPlayback, HarreksRampHelperDB.options.ttsRate, HarreksRampHelperDB.options.ttsVolume)
+    end
 end
 
 --[[Format Functions]]--
