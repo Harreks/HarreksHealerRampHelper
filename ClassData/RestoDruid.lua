@@ -8,8 +8,19 @@ ns['RestoDruid']['rampTypes'] = function()
     return {
         ['Flourish'] = {
             {
-                ['text'] = 'Flourish Ramp',
+                ['text'] = 'Start Ramping',
                 ['icon'] = 136081,
+                ['offset'] = 15
+            },
+            {
+                ['text'] = 'Flourish Soon',
+                ['icon'] = 538743,
+                ['offset'] = 3,
+                ['showTimer'] = true
+            },
+            {
+                ['text'] = 'Flourish',
+                ['icon'] = 538743,
                 ['offset'] = 0
             }
         }

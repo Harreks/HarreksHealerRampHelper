@@ -78,14 +78,21 @@ function ns:SetPlayerSpec()
     specName = ns.specs[specId]
     if specName then
         specSupported = true
-        local haste = GetHaste() / 1000
+        local haste = GetHaste() / 100
         for spellId, spell in pairs(ns[specName]['spells']) do
-            if spell['charges'] then
-                local spellCd = C_Spell.GetSpellCharges(spellId)
-                ns[specName]['spells'][spellId]['cd'] = tonumber(string.format('%.1f', spellCd.cooldownDuration))
-            else
-                local spellCd = GetSpellBaseCooldown(spellId)
-                ns[specName]['spells'][spellId]['cd'] = tonumber(string.format('%.1f', (spellCd / 1000) / ( 1 + haste)))
+            if spell['modifiers'] then
+                for modifier, effect in pairs(spell['modifiers']) do
+                    if IsPlayerSpell(modifier) then
+                        if spell['baseCd'] then
+                            ns[specName]['spells'][spellId]['baseCd'] = ns[specName]['spells'][spellId]['baseCd'] + effect
+                        else
+                            ns[specName]['spells'][spellId]['cd'] = ns[specName]['spells'][spellId]['cd'] + effect
+                        end
+                    end
+                end
+            end
+            if spell['baseCd'] then
+                ns[specName]['spells'][spellId]['cd'] = tonumber(string.format('%.1f', (ns[specName]['spells'][spellId]['baseCd']) / ( 1 + haste)))
             end
         end
     end
@@ -161,6 +168,11 @@ function ns:ComputeDynamicAssignments(currentTime)
             end
         end
     end
+end
+
+--Gets either the actual cooldown or the base cooldown of a spell depending on if haste as been computed
+function ns:GetRealCooldown(spec, spellId)
+    return ns[spec]['spells'][spellId]['cd'] or ns[spec]['spells'][spellId]['baseCd']
 end
 
 --[[Display Functions]]--

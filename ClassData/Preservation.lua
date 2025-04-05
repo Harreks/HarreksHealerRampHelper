@@ -30,7 +30,7 @@ ns['Preservation']['rampTypes'] = function()
                 ['text'] = 'Save TA',
                 ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
-                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
+                ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861)),
             },
             {
                 ['text'] = 'Save DB',
@@ -59,7 +59,7 @@ ns['Preservation']['rampTypes'] = function()
                 ['text'] = 'Save TA',
                 ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
-                ['offset'] = 18 + (ns['Preservation']['spells'][373861]['cd'] or ns['Preservation']['spells'][373861]['baseCd'])
+                ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861))
             },
             {
                 ['text'] = 'Start Ramping',
