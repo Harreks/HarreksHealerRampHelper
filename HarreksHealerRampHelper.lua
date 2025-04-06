@@ -30,7 +30,7 @@ local startTimer = CreateFrame("Frame"); --The frame that runs the functions on 
 startTimer:RegisterEvent("PLAYER_REGEN_DISABLED");
 startTimer:RegisterEvent("ENCOUNTER_START");
 startTimer:SetScript("OnEvent", function(_, event, encounterId, _, difficultyId)
-    if event == "ENCOUNTER_START" or (event == "PLAYER_REGEN_DISABLED" and HarreksRampHelperDB.testing.testMode) then
+    if (event == "ENCOUNTER_START" and ns.difficulties[difficultyId] and ns.bosses[encounterId]) or (event == "PLAYER_REGEN_DISABLED" and HarreksRampHelperDB.testing.testMode) then
         ns:SetPlayerSpec()
         if specSupported then
             ns:SetupTimings(event, encounterId, difficultyId)
