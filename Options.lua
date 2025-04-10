@@ -465,7 +465,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                     local importText = HarreksRampHelperDB.import.importText
                                     if fightId and diffId and importText then
                                         local diffSlug = ns.difficulties[diffId].slug
-                                        local timers = ns:ConvertNoteToTable(importText)
+                                        local timers = ns:ConvertNoteToTable(importText, specName)
                                         for spell, timings in pairs(timers) do
                                             local rampType = ns[specName]['cooldowns'][tonumber(spell)]
                                             if rampType then
@@ -476,7 +476,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                                 HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][rampType] = timingsString
                                             end
                                         end
-                                        HarreksRampHelperDB.import.importText = 'Successfully imported timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId]
+                                        HarreksRampHelperDB.import.importText = 'Successfully imported ' .. specName .. ' timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId]
                                     end
                                 end
                             },

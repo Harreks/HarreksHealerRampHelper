@@ -240,27 +240,35 @@ function ns:ConvertTimesToTable(timeString)
 end
 
 --Convert from MRTNote format to Table to write into the DB
-function ns:ConvertNoteToTable(noteString)
+function ns:ConvertNoteToTable(noteString, spec)
+    local toonName = UnitName("player")
     local timesTable = {}
     if noteString then
         for line in noteString:gmatch("[^\r\n]+") do
-            local assignment = {
-                time = nil,
-                spell = nil
-            }
-            for data in line:gmatch("%b{}") do
-                if(data:find("time")) then
-                    local time = data:gsub("%{time:", ""):gsub("%}", "")
-                    assignment.time = time
-                elseif(data:find("spell")) then
-                    local spell = data:gsub("%{spell:", ""):gsub("%}", "")
-                    assignment.spell = spell
+            if line:find(toonName) then
+                local assignment = {
+                    time = nil,
+                    spells = {}
+                }
+                for data in line:gmatch("%b{}") do
+                    if(data:find("time")) then
+                        local time = data:gsub("%{time:", ""):gsub("%}", "")
+                        assignment.time = time
+                        break
+                    end
+                end
+                for spell in line:gmatch(toonName .. " %{spell:(%d+)%}") do
+                    table.insert(assignment.spells, spell)
+                end
+                for _, spell in pairs(assignment.spells) do
+                    if ns[spec]['cooldowns'][tonumber(spell)] then
+                        if timesTable[spell] == nil then
+                            timesTable[spell] = {}
+                        end
+                        table.insert(timesTable[spell], assignment.time)
+                    end
                 end
             end
-            if timesTable[assignment.spell] == nil then
-                timesTable[assignment.spell] = {}
-            end
-            table.insert(timesTable[assignment.spell], assignment.time)
         end
     end
     return timesTable
