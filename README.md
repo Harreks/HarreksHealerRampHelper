@@ -4,7 +4,8 @@
 
 > The Healer Ramp Helper is a tool designed to help healers manage their cooldowns in order to properly execute ramps. It works similarly to assigning every part of a ramp's instructions as warnings or reminders but facilitates this process by automatically creating reminders for all the steps based on the best recommended practices for the spec.
 
-[CurseForge AddOn Page](https://www.curseforge.com/wow/addons/harreks-healer-ramp-helper)
+[CurseForge Addn Page](https://www.curseforge.com/wow/addons/harreks-healer-ramp-helper)
+[Wago Addon Page](https://addons.wago.io/addons/harreks-healer-ramp-helper)
 
 <h2>
   How does it work

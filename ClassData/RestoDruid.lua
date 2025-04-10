@@ -2,6 +2,7 @@ local _, ns = ...
 
 ns['RestoDruid'] = {
     ['spells'] = {},
+    ['cooldowns'] = {}
 }
 
 ns['RestoDruid']['rampTypes'] = function()

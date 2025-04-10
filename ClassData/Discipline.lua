@@ -16,6 +16,7 @@ ns['Discipline'] = {
             }
         }
     },
+    ['cooldowns'] = {}
 }
 
 ns['Discipline']['rampTypes'] = function()

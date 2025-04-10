@@ -16,6 +16,11 @@ local defaultOptions = {
         ['ttsVoice'] = 1,
         ['ttsRate'] = -1,
         ['ttsVolume'] = 100
+    },
+    ['import'] = {
+        ['fight'] = nil,
+        ['difficulty'] = nil,
+        ['importText'] = nil
     }
 }
 
@@ -40,6 +45,9 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
         end
         --Initialize configurations
         HarreksRampHelperDB.options.toggleDisplay = false
+        HarreksRampHelperDB.import.fight = nil
+        HarreksRampHelperDB.import.difficulty = nil
+        HarreksRampHelperDB.import.importText = nil
         ns.infoFrame.text:SetScale(HarreksRampHelperDB.options.textSize)
         ns.infoFrame.timer:SetScale(HarreksRampHelperDB.options.timerSize)
         ns.infoFrame.icon:SetSize(HarreksRampHelperDB.options.iconSizeW, HarreksRampHelperDB.options.iconSizeH)
@@ -125,7 +133,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 frame:SetCallback("OnClose", function(widget) AceGUI:Release(widget) end)
                                 local textBox = AceGUI:Create("EditBox")
                                 textBox:SetFullWidth(true)
-                                textBox:SetText("NYI")
+                                textBox:SetText("https://www.curseforge.com/wow/addons/harreks-healer-ramp-helper")
                                 textBox:HighlightText()
                                 textBox:SetFocus()
                                 frame:AddChild(textBox)
@@ -406,6 +414,88 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         name = "Ramp Types",
                         order = 2,
                         args = {}
+                    },
+                    --Import and export functionality
+                    importExport = {
+                        type = "group",
+                        name = "Import/Export",
+                        order = 3,
+                        args = {
+                            importFight = {
+                                type = "select",
+                                name = "Fight",
+                                order = 1,
+                                width = defaultOptionWidth,
+                                values = ns.bosses,
+                                get = function() return HarreksRampHelperDB.import.fight end,
+                                set = function(_, fightId) HarreksRampHelperDB.import.fight = fightId end
+                            },
+                            importDifficulty = {
+                                type = "select",
+                                name = "Difficulty",
+                                order = 2,
+                                width = defaultOptionWidth,
+                                values = function()
+                                    local difficulties = {}
+                                    for diffId, diff in pairs(ns.difficulties) do
+                                        difficulties[diffId] = diff.name
+                                    end
+                                    return difficulties
+                                end,
+                                get = function() return HarreksRampHelperDB.import.difficulty end,
+                                set = function(_, diffId) HarreksRampHelperDB.import.difficulty = diffId end
+                            },
+                            importText = {
+                                type = "input",
+                                name = "Import Text",
+                                order = 3,
+                                multiline = 15,
+                                width = "full",
+                                set = function(_, val) HarreksRampHelperDB.import.importText = val end,
+                                get = function() return HarreksRampHelperDB.import.importText end
+                            },
+                            importButton = {
+                                type = "execute",
+                                name = "Import Timers",
+                                order = 4,
+                                width = defaultOptionWidth,
+                                func = function()
+                                    local fightId = HarreksRampHelperDB.import.fight
+                                    local diffId = HarreksRampHelperDB.import.difficulty
+                                    local importText = HarreksRampHelperDB.import.importText
+                                    if fightId and diffId and importText then
+                                        local diffSlug = ns.difficulties[diffId].slug
+                                        local timers = ns:ConvertNoteToTable(importText)
+                                        for spell, timings in pairs(timers) do
+                                            local rampType = ns[specName]['cooldowns'][tonumber(spell)]
+                                            if rampType then
+                                                local timingsString = ''
+                                                for _, time in pairs(timings) do
+                                                    timingsString = timingsString .. time .. '\n'
+                                                end
+                                                HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][rampType] = timingsString
+                                            end
+                                        end
+                                        HarreksRampHelperDB.import.importText = 'Successfully imported timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId]
+                                    end
+                                end
+                            },
+                            exportButton = {
+                                type = "execute",
+                                name = "Export Timers",
+                                order = 5,
+                                width = defaultOptionWidth,
+                                func = function()
+                                    local fightId = HarreksRampHelperDB.import.fight
+                                    local diffId = HarreksRampHelperDB.import.difficulty
+                                    if fightId and diffId then
+                                        local diffSlug = ns.difficulties[diffId].slug
+                                        local timingsString = ns:ConvertTimingsToNote(specName, diffSlug, fightId)
+                                        HarreksRampHelperDB.import.importText = timingsString
+                                    end
+                                end
+                            }
+                        }
                     }
                 }
             }

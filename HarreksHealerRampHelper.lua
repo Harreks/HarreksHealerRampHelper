@@ -238,3 +238,61 @@ function ns:ConvertTimesToTable(timeString)
     end
     return timesTable
 end
+
+--Convert from MRTNote format to Table to write into the DB
+function ns:ConvertNoteToTable(noteString)
+    local timesTable = {}
+    if noteString then
+        for line in noteString:gmatch("[^\r\n]+") do
+            local assignment = {
+                time = nil,
+                spell = nil
+            }
+            for data in line:gmatch("%b{}") do
+                if(data:find("time")) then
+                    local time = data:gsub("%{time:", ""):gsub("%}", "")
+                    assignment.time = time
+                elseif(data:find("spell")) then
+                    local spell = data:gsub("%{spell:", ""):gsub("%}", "")
+                    assignment.spell = spell
+                end
+            end
+            if timesTable[assignment.spell] == nil then
+                timesTable[assignment.spell] = {}
+            end
+            table.insert(timesTable[assignment.spell], assignment.time)
+        end
+    end
+    return timesTable
+end
+
+--Convert timings from the DB to a string with MRT format
+function ns:ConvertTimingsToNote(spec, diffSlug, fightId)
+    local timingsTable = HarreksRampHelperDB[spec][diffSlug][tostring(fightId)]
+    local toonName = UnitName("player")
+    local parsedTimingsTable = {}
+    local orderedTable = {}
+    for ramp, timingsString in pairs(timingsTable) do
+        local rampTimes = ns:ConvertTimesToTable(timingsString)
+        for _, time in pairs(rampTimes) do
+            local currentSpellId = nil
+            for spellId, rampSpellName in pairs(ns[spec]['cooldowns']) do
+                if ramp == rampSpellName then
+                    currentSpellId = spellId
+                    break
+                end
+            end
+            local minutes = floor(mod(time,3600)/60)
+            local seconds = floor(mod(time,60))
+            local parsedTime = format("%02d:%02d", minutes, seconds)
+            table.insert(orderedTable, time)
+            parsedTimingsTable[time] = "{time:" .. parsedTime .. "} - " .. toonName .. " {spell:" .. currentSpellId .. "}"
+        end
+    end
+    table.sort(orderedTable, function(a, b) return a < b end)
+    local parsedNoteString = ''
+    for _, time in ipairs(orderedTable) do
+        parsedNoteString = parsedNoteString .. parsedTimingsTable[time] .. "\n"
+    end
+    return parsedNoteString
+end
