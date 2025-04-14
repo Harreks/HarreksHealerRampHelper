@@ -1,11 +1,23 @@
 --[[Initialization]]--
 --Namespace
 local _, ns = ...
+local next = next
 --Timer Variables
-local currentTimer = 0
-local timerStartTime = nil
-local timerRunning = false
-local runningTimer = nil
+ns.mainTimerData = {
+    currentTimer = 0,
+    startTime = nil,
+    timerRunning = false,
+    runningTimer = nil
+}
+ns.phaseTimerData = {
+    currentPhase = nil,
+    currentTimer = 0,
+    startTime = nil,
+    timerRunning = false,
+    runningTimer = nil,
+    phaseActivations = {},
+    phaseTriggerCounter = {}
+}
 --Assignment Variables
 local specName = nil
 local specSupported = false
@@ -26,48 +38,98 @@ ns.infoFrame.timer:SetPoint("CENTER", ns.infoFrame.icon, "CENTER") --Attached to
 ns.infoFrame.timer:SetShadowColor(0, 0, 0, 1)
 ns.infoFrame.timer:SetShadowOffset(-2, -2)
 --Timer Frames
-local startTimer = CreateFrame("Frame"); --The frame that runs the functions on encounter start
-startTimer:RegisterEvent("PLAYER_REGEN_DISABLED");
-startTimer:RegisterEvent("ENCOUNTER_START");
+local phaseEvents = CreateFrame("Frame") --Frame that handles phase changing
+phaseEvents:SetScript("OnEvent", function()
+    local _, subEvent, _, _, _, _, _, _, _, _, _, spellId = CombatLogGetCurrentEventInfo()
+    for phase, trigger in pairs(ns.phaseTimerData.phaseActivations) do
+        if subEvent == ns.phaseEvents[trigger.event] and spellId == tonumber(trigger.spell) then
+            if ns.phaseTimerData.phaseTriggerCounter[phase] then
+                ns.phaseTimerData.phaseTriggerCounter[phase] = ns.phaseTimerData.phaseTriggerCounter[phase] + 1
+            else
+                ns.phaseTimerData.phaseTriggerCounter[phase] = 1
+            end
+            if ns.phaseTimerData.phaseTriggerCounter[phase] == tonumber(ns.phaseTimerData.phaseActivations[phase].count) then
+                ns:StartPhase(phase)
+            end
+        end
+    end
+end)
+
+local startTimer = CreateFrame("Frame") --The frame that runs the functions on encounter start
+startTimer:RegisterEvent("PLAYER_REGEN_DISABLED")
+startTimer:RegisterEvent("ENCOUNTER_START")
 startTimer:SetScript("OnEvent", function(_, event, encounterId, _, difficultyId)
     if (event == "ENCOUNTER_START" and ns.difficulties[difficultyId] and ns.bosses[encounterId]) or (event == "PLAYER_REGEN_DISABLED" and HarreksRampHelperDB.testing.testMode) then
         ns:SetPlayerSpec()
         if specSupported then
             ns:SetupTimings(event, encounterId, difficultyId)
+            if encounterId and next(ns.bosses[encounterId].phases[ns.difficulties[difficultyId].slug]) ~= nil then
+                local bossPhaseChanges = ns.bosses[encounterId].phases[ns.difficulties[difficultyId].slug]
+                ns:SetupPhaseChanges(bossPhaseChanges)
+            end
             ns:StartTimer()
         end
     end
 end)
-local stopTimer = CreateFrame("Frame"); --Frame that stops the timer on encounter end
-stopTimer:RegisterEvent("ENCOUNTER_END");
-stopTimer:RegisterEvent("PLAYER_REGEN_ENABLED");
+
+local stopTimer = CreateFrame("Frame") --Frame that stops the timer on encounter end
+stopTimer:RegisterEvent("ENCOUNTER_END")
+stopTimer:RegisterEvent("PLAYER_REGEN_ENABLED")
 stopTimer:SetScript("OnEvent", function(_, event)
     if event == "ENCOUNTER_END" or (event == "PLAYER_REGEN_ENABLED" and HarreksRampHelperDB.testing.testMode) then
         ns:StopTimer()
     end
 end)
 
+
 --[[Timer Functions]]--
 --When encounter starts, this function starts the fight timer and creates a ticker to check twice every second if any assignment is due to be shown
 function ns:StartTimer()
-    timerStartTime = GetTime()
-    timerRunning = true
-    runningTimer = C_Timer.NewTicker(0.5, function()
-        currentTimer = GetTime() - timerStartTime
-        local formattedTime = ns:CutDecimals(currentTimer)
-        if ns.fightAssignments['static'][formattedTime] and not ns.fightAssignments['static'][formattedTime]['loaded'] then
-            ns:ShowAssignment(ns.fightAssignments['static'][formattedTime], formattedTime)
-            ns.fightAssignments['static'][formattedTime]['loaded'] = true
-        end
-        ns:ComputeDynamicAssignments(formattedTime)
+    ns.mainTimerData.startTime = GetTime()
+    ns.mainTimerData.timerRunning = true
+    ns.mainTimerData.runningTimer = C_Timer.NewTicker(0.5, function()
+        ns.mainTimerData.currentTimer = GetTime() - ns.mainTimerData.startTime
+        ns:RunAssignmentCheck(ns.mainTimerData.currentTimer, 'main')
     end)
 end
 
 --On encounter end, stops the timer
 function ns:StopTimer()
-    if timerRunning and runningTimer ~= nil then
-        runningTimer:Cancel()
-        timerRunning = false
+    if ns.mainTimerData.timerRunning and ns.mainTimerData.runningTimer ~= nil then
+        ns.mainTimerData.runningTimer:Cancel()
+        ns.mainTimerData.timerRunning = false
+    end
+    phaseEvents:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    if ns.phaseTimerData.timerRunning and ns.phaseTimerData.runningTimer ~= nil then
+        ns.phaseTimerData.runningTimer:Cancel()
+        ns.phaseTimerData.timerRunning = false
+    end
+end
+
+--When the conditions for starting a phase are met, starts the phase timer with the data for that phase
+function ns:StartPhase(phase)
+    ns.phaseTimerData.startTime = GetTime()
+    ns.phaseTimerData.currentTimer = 0
+    ns.phaseTimerData.timerRunning = true
+    ns.phaseTimerData.currentPhase = phase
+    if ns.phaseTimerData.runningTimer then
+        ns.phaseTimerData.runningTimer:Cancel()
+    end
+    ns.phaseTimerData.runningTimer = C_Timer.NewTicker(0.5, function()
+        ns.phaseTimerData.currentTimer = GetTime() - ns.phaseTimerData.startTime
+        ns:RunAssignmentCheck(ns.phaseTimerData.currentTimer, phase)
+    end)
+end
+
+--Called with a specific time and a phase, it checks for assignments for that phase at that time and if they haven't been ran before, runs them
+function ns:RunAssignmentCheck(time, phase)
+    if ns.fightAssignments[tostring(phase)] then
+        local formattedTime = ns:CutDecimals(time)
+        if ns.fightAssignments[tostring(phase)]['static'][formattedTime] and not ns.fightAssignments[tostring(phase)]['static'][formattedTime]['loaded'] then
+            ns:ShowAssignment(ns.fightAssignments[tostring(phase)]['static'][formattedTime])
+            ns.fightAssignments[tostring(phase)]['static'][formattedTime]['loaded'] = true
+        end
+        ns:ComputeDynamicAssignments(formattedTime, phase)
     end
 end
 
@@ -103,10 +165,7 @@ end
 function ns:SetupTimings(event, encounterId, difficultyId)
     ns:ResetDisplay()
     --Init fight assignments Table
-    ns.fightAssignments = {
-        ['static'] = {},
-        ['dynamic'] = {}
-    }
+    ns.fightAssignments = {}
     local rampTypesTable = ns[specName]['rampTypes']()
     for type, _ in pairs(rampTypesTable) do
         local fightTimings
@@ -117,26 +176,34 @@ function ns:SetupTimings(event, encounterId, difficultyId)
             fightTimings = HarreksRampHelperDB[specName].testTimers[type]
         end
         fightTimings = ns:ConvertTimesToTable(fightTimings)
-        for _, timing in pairs(fightTimings) do
-            for _, assignment in pairs(rampTypesTable[type]) do
-                local assignmentTime = ns:CutDecimals(timing - assignment['offset'])
-                if assignmentTime >= 0 then
-                    if assignment['dynamic'] then
-                        ns.fightAssignments['dynamic'][assignmentTime] = {
-                            ['text'] = assignment['text'],
-                            ['icon'] = assignment['icon'],
-                            ['loaded'] = false,
-                            ['spellId'] = assignment['spellId'],
-                            ['tts'] = assignment['tts'] or nil
-                        }
-                    else
-                        ns.fightAssignments['static'][assignmentTime] = {
-                            ['text'] = assignment['text'],
-                            ['icon'] = assignment['icon'],
-                            ['loaded'] = false,
-                            ['showTimer'] = assignment['showTimer'],
-                            ['tts'] = assignment['tts'] or nil
-                        }
+        for index, phaseTimings in pairs(fightTimings) do
+            if not ns.fightAssignments[index] then
+                ns.fightAssignments[index] = {
+                    ['dynamic'] = {},
+                    ['static'] = {}
+                }
+            end
+            for _, timing in pairs(phaseTimings) do
+                for _, assignment in pairs(rampTypesTable[type]) do
+                    local assignmentTime = ns:CutDecimals(timing - assignment['offset'])
+                    if assignmentTime >= 0 then
+                        if assignment['dynamic'] then
+                            ns.fightAssignments[index]['dynamic'][assignmentTime] = {
+                                ['text'] = assignment['text'],
+                                ['icon'] = assignment['icon'],
+                                ['loaded'] = false,
+                                ['spellId'] = assignment['spellId'],
+                                ['tts'] = assignment['tts'] or nil
+                            }
+                        else
+                            ns.fightAssignments[index]['static'][assignmentTime] = {
+                                ['text'] = assignment['text'],
+                                ['icon'] = assignment['icon'],
+                                ['loaded'] = false,
+                                ['showTimer'] = assignment['showTimer'],
+                                ['tts'] = assignment['tts'] or nil
+                            }
+                        end
                     end
                 end
             end
@@ -145,8 +212,8 @@ function ns:SetupTimings(event, encounterId, difficultyId)
 end
 
 --The time to show a dynamic assignment depends on how you are using the charges, this compares the potential cooldown of the spell with the remaining time before the assignment to see if it should be shown
-function ns:ComputeDynamicAssignments(currentTime)
-    for time, assignment in pairs(ns.fightAssignments['dynamic']) do
+function ns:ComputeDynamicAssignments(currentTime, phase)
+    for time, assignment in pairs(ns.fightAssignments[tostring(phase)]['dynamic']) do
         if time >= currentTime and not assignment['loaded'] then
             local timeLeft = time - currentTime
             local spellInfo = C_Spell.GetSpellCharges(assignment['spellId'])
@@ -163,8 +230,8 @@ function ns:ComputeDynamicAssignments(currentTime)
                 timeUntilFullCharges = timeUntilFullCharges + spellCd + spellInfo.cooldownDuration
             end
             if timeUntilFullCharges >= timeLeft then
-                ns:ShowAssignment(assignment, currentTime)
-                ns.fightAssignments['dynamic'][time]['loaded'] = true
+                ns:ShowAssignment(assignment)
+                ns.fightAssignments[tostring(phase)]['dynamic'][time]['loaded'] = true
             end
         end
     end
@@ -175,16 +242,27 @@ function ns:GetRealCooldown(spec, spellId)
     return ns[spec]['spells'][spellId]['cd'] or ns[spec]['spells'][spellId]['baseCd']
 end
 
+--Sets up the phase changing condition for the current fight
+function ns:SetupPhaseChanges(phaseChangesTable)
+    local phaseChanges = {}
+    for phase, trigger in pairs(phaseChangesTable) do
+        phaseChanges[phase] = ns:FormatPhaseChangeString(trigger)
+    end
+    phaseEvents:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    ns.phaseTimerData.phaseActivations = phaseChanges
+end
+
 --[[Display Functions]]--
 --Showing an assignment involved updating the icon and text of the infoFrame, and sending the text as TTS. The timer is shown if the assignment has the showTimer flag set to true
-function ns:ShowAssignment(assignment, displayTime)
+function ns:ShowAssignment(assignment)
     ns.infoFrame.text:SetText(assignment['text'])
     ns.infoFrame.icon:SetTexture(assignment['icon'])
     ns:SendTts(assignment['tts'] or assignment['text'])
     local showTimer = nil
     if assignment['showTimer'] then
+        local hideTime = GetTime() + 3
         showTimer = C_Timer.NewTicker(0.01, function()
-            ns.infoFrame.timer:SetText((string.format('%.1f', (displayTime + 3) - (GetTime() - timerStartTime))))
+            ns.infoFrame.timer:SetText((string.format('%.1f', hideTime - GetTime())))
         end)
     end
     C_Timer.NewTimer(3, function()
@@ -221,11 +299,23 @@ function ns:CutDecimals(time)
     return tonumber(string.format('%.0f', time))
 end
 
---Convert a string of times separated by new lines into a table
+--Convert a string of times separated by new lines into a table. If the time has phases marked by 'p#' then they go into a table indexed by the phase number, otherwise they go into main
 function ns:ConvertTimesToTable(timeString)
-    local timesTable = {}
+    local timesTable = {
+        main = {}
+    }
     if timeString then
         for time in timeString:gmatch("[^\r\n]+") do
+            local phase = nil
+            if time:find(',') then
+                for val in time:gmatch("([^,]+)") do
+                    if val:find('p') then
+                        phase = val:gsub(' p', '')
+                    else
+                        time = val
+                    end
+                end
+            end
             if string.find(time, ':') then
                 local timeSplit = {}
                 for val in time:gmatch("([^:]+)") do
@@ -233,14 +323,21 @@ function ns:ConvertTimesToTable(timeString)
                 end
                 time = timeSplit[1] * 60 + timeSplit[2]
             end
-            table.insert(timesTable, tonumber(time))
+            if not phase then
+                table.insert(timesTable.main, tonumber(time))
+            else
+                if not timesTable[phase] then
+                    timesTable[phase] = {}
+                end
+                table.insert(timesTable[phase], tonumber(time))
+            end
         end
     end
     return timesTable
 end
 
 --Convert from MRTNote format to Table to write into the DB
-function ns:ConvertNoteToTable(noteString, spec)
+function ns:ConvertNoteToTable(noteString, spec, fightId, diffSlug)
     local toonName = UnitName("player")
     local timesTable = {}
     if noteString then
@@ -253,6 +350,27 @@ function ns:ConvertNoteToTable(noteString, spec)
                 for data in line:gmatch("%b{}") do
                     if(data:find("time")) then
                         local time = data:gsub("%{time:", ""):gsub("%}", "")
+                        if time:find(',') then
+                            local values = {
+                                time = nil,
+                                phase = nil,
+                                track = nil
+                            }
+                            for val in time:gmatch("([^,]+)") do
+                                if val:find('S') then
+                                    values.track = val
+                                else
+                                    values.time = val
+                                end
+                            end
+                            for phase, identifier in pairs(ns.bosses[fightId].phases[diffSlug]) do
+                                if values.track == identifier then
+                                    values.phase = ' p' .. phase
+                                    break
+                                end
+                            end
+                            time = time:gsub(values.track, values.phase)
+                        end
                         assignment.time = time
                         break
                     end
@@ -282,25 +400,52 @@ function ns:ConvertTimingsToNote(spec, diffSlug, fightId)
     local orderedTable = {}
     for ramp, timingsString in pairs(timingsTable) do
         local rampTimes = ns:ConvertTimesToTable(timingsString)
-        for _, time in pairs(rampTimes) do
-            local currentSpellId = nil
-            for spellId, rampSpellName in pairs(ns[spec]['cooldowns']) do
-                if ramp == rampSpellName then
-                    currentSpellId = spellId
-                    break
+        for phase, assignmentList in pairs(rampTimes) do
+            for _, time in pairs(assignmentList) do
+                local currentSpellId = nil
+                for spellId, rampSpellName in pairs(ns[spec]['cooldowns']) do
+                    if ramp == rampSpellName then
+                        currentSpellId = spellId
+                        break
+                    end
                 end
+                local minutes = floor(mod(time,3600)/60)
+                local seconds = floor(mod(time,60))
+                local parsedTime = format("%02d:%02d", minutes, seconds)
+                local indexString = nil
+                if phase ~= "main" then
+                    if ns.bosses[fightId].phases[diffSlug][tonumber(phase)] then
+                        parsedTime = parsedTime .. ',' .. ns.bosses[fightId].phases[diffSlug][tonumber(phase)]
+                    else
+                        parsedTime = parsedTime .. ',p' .. phase
+                    end
+                    indexString = tonumber(phase) .. '-' .. time
+                else
+                    indexString = 0 .. '-' .. time
+                end
+                table.insert(orderedTable, indexString)
+                parsedTimingsTable[indexString] = "{time:" .. parsedTime .. "} - " .. toonName .. " {spell:" .. currentSpellId .. "} "
             end
-            local minutes = floor(mod(time,3600)/60)
-            local seconds = floor(mod(time,60))
-            local parsedTime = format("%02d:%02d", minutes, seconds)
-            table.insert(orderedTable, time)
-            parsedTimingsTable[time] = "{time:" .. parsedTime .. "} - " .. toonName .. " {spell:" .. currentSpellId .. "}"
         end
     end
     table.sort(orderedTable, function(a, b) return a < b end)
     local parsedNoteString = ''
-    for _, time in ipairs(orderedTable) do
-        parsedNoteString = parsedNoteString .. parsedTimingsTable[time] .. "\n"
+    for _, index in ipairs(orderedTable) do
+        parsedNoteString = parsedNoteString .. parsedTimingsTable[index] .. "\n"
     end
     return parsedNoteString
+end
+
+--Cuts up an MRT note formatted phase change string to its components
+function ns:FormatPhaseChangeString(phaseChangesString)
+    local parts = {}
+    for part in phaseChangesString:gmatch("[^:]+") do
+        table.insert(parts, part)
+    end
+    parts = {
+        ['event'] = parts[1],
+        ['spell'] = parts[2],
+        ['count'] = parts[3]
+    }
+    return parts
 end

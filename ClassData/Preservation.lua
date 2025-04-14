@@ -18,9 +18,10 @@ ns['Preservation'] = {
         [370537] = 'Stasis',
         [370564] = 'Stasis Release',
         [370960] = 'EC',
+        [370984] = 'EC', --Viserio's CD planner uses a wrong id for EC, this duplicate means importing from the sheet still adds EC assignments
         [359816] = 'Dreamflight',
         [363534] = 'Rewind',
-        [444088] = 'Double Engulf'
+        [443328] = 'Double Engulf'
     }
 }
 
@@ -145,18 +146,18 @@ ns['Preservation']['rampTypes'] = function()
                 ['offset'] = 30
             },
             {
-                ['text'] = 'Ramp for Consume',
+                ['text'] = 'Ramp for Double Engulf',
                 ['icon'] = 4630480,
                 ['offset'] = 18
             },
             {
-                ['text'] = 'Consume Flame Soon',
+                ['text'] = 'Double Engulf Soon',
                 ['icon'] = 4914680,
                 ['offset'] = 3,
                 ['showTimer'] = true
             },
             {
-                ['text'] = 'Consume Flame',
+                ['text'] = 'Double Engulf',
                 ['icon'] = 4914680,
                 ['offset'] = 0
             }

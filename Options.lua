@@ -426,7 +426,13 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 name = "Fight",
                                 order = 1,
                                 width = defaultOptionWidth,
-                                values = ns.bosses,
+                                values = function()
+                                    local fights = {}
+                                    for fightId, fight in pairs(ns.bosses) do
+                                        fights[fightId] = fight.name
+                                    end
+                                    return fights
+                                end,
                                 get = function() return HarreksRampHelperDB.import.fight end,
                                 set = function(_, fightId) HarreksRampHelperDB.import.fight = fightId end
                             },
@@ -465,7 +471,10 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                     local importText = HarreksRampHelperDB.import.importText
                                     if fightId and diffId and importText then
                                         local diffSlug = ns.difficulties[diffId].slug
-                                        local timers = ns:ConvertNoteToTable(importText, specName)
+                                        local timers = ns:ConvertNoteToTable(importText, specName, fightId, diffSlug)
+                                        for type, _ in pairs(HarreksRampHelperDB[specName][diffSlug][tostring(fightId)]) do
+                                            HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][type] = ''
+                                        end
                                         for spell, timings in pairs(timers) do
                                             local rampType = ns[specName]['cooldowns'][tonumber(spell)]
                                             if rampType then
@@ -476,7 +485,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                                 HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][rampType] = timingsString
                                             end
                                         end
-                                        HarreksRampHelperDB.import.importText = 'Successfully imported ' .. specName .. ' timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId]
+                                        HarreksRampHelperDB.import.importText = 'Successfully imported ' .. specName .. ' timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId].name
                                     end
                                 end
                             },
@@ -515,7 +524,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                     args = {}
                 }
                 --For each encounter in the data file
-                for encounterId, encounterName in pairs(ns.bosses) do
+                for encounterId, encounter in pairs(ns.bosses) do
                     --Check HarreksRampHelperDB if this boss exists for this difficulty on this spec
                     if not HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)] then
                         HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)] = {}
@@ -558,7 +567,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         else
                             specRampFiles = specRampFiles .. '\n\n'
                         end
-                        specRampFiles = specRampFiles .. '|cffffd100' .. type .. ' Ramps|r \n'
+                        specRampFiles = specRampFiles .. '|cffffd100' .. type .. '|r\n'
                         for _, assignment in pairs(assignments) do
                             specRampFiles = specRampFiles .. "- '" .. assignment['text'] .. "'"
                             if assignment['dynamic'] then
@@ -578,7 +587,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                     --Add the ramp types for this fight to the appropriate difficulty in the specTable
                     specTable.args.fights.args[diffSlug].args[tostring(encounterId)] = {
                         type = "group",
-                        name = encounterName,
+                        name = encounter.name,
                         args = rampTypeOptions,
                         order = encounterId
                     }
