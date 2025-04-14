@@ -1,5 +1,6 @@
 --Namespace
 local _, ns = ...
+local next = next
 local defaultOptions = {
     ['testing'] = {
         ['testMode'] = false
@@ -397,6 +398,30 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                 name = specName .. ' Test Timers',
                 args = {}
             }
+            --Get the ramp types from the data file of the spec
+            local rampTypes = ns[specName]['rampTypes']()
+            --Initialize string description of the spec's ramps
+            local specRampFiles = ""
+            local firstType = true
+            --For each type of ramp in the data
+            for type, assignments in pairs(rampTypes) do
+                --Build string description of the ramps
+                if firstType then
+                    firstType = false
+                else
+                    specRampFiles = specRampFiles .. '\n\n'
+                end
+                specRampFiles = specRampFiles .. '|cffffd100' .. type .. '|r\n'
+                for _, assignment in pairs(assignments) do
+                    specRampFiles = specRampFiles .. "- '" .. assignment['text'] .. "'"
+                    if assignment['dynamic'] then
+                        specRampFiles = specRampFiles .. ' on a dynamic time depending on charges'
+                    else
+                        specRampFiles = specRampFiles .. ' ' .. assignment['offset'] .. ' seconds before the timer'
+                    end
+                    specRampFiles = specRampFiles .. '\n'
+                end
+            end
             --Local variable to store the data for this spec
             local specTable = {
                 type = "group",
@@ -413,7 +438,12 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         type = "group",
                         name = "Ramp Types",
                         order = 2,
-                        args = {}
+                        args = {
+                            desc = {
+                            type = "description",
+                            name = specRampFiles,
+                            fontSize = "medium"
+                        }}
                     },
                     --Import and export functionality
                     importExport = {
@@ -531,13 +561,8 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                     end
                     --Local variable to store the ramp types
                     local rampTypeOptions = {}
-                    --Get the ramp types from the data file of the spec
-                    local rampTypes = ns[specName]['rampTypes']()
-                    --Initialize string description of the spec's ramps
-                    local specRampFiles = ""
-                    local firstType = true
                     --For each type of ramp in the data
-                    for type, assignments in pairs(rampTypes) do
+                    for type, _ in pairs(rampTypes) do
                         --Check HarreksRampHelperDB if this rampType exists on this boss for this difficulty on this spec
                         if not HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)][type] then
                             HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)][type] = ""
@@ -561,35 +586,65 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             set = function(_, val) HarreksRampHelperDB[specName].testTimers[type] = val end,
                             get = function() return HarreksRampHelperDB[specName].testTimers[type] end
                         }
-                        --Build string description of the ramps
-                        if firstType then
-                            firstType = false
-                        else
-                            specRampFiles = specRampFiles .. '\n\n'
-                        end
-                        specRampFiles = specRampFiles .. '|cffffd100' .. type .. '|r\n'
-                        for _, assignment in pairs(assignments) do
-                            specRampFiles = specRampFiles .. "- '" .. assignment['text'] .. "'"
-                            if assignment['dynamic'] then
-                                specRampFiles = specRampFiles .. ' on a dynamic time depending on charges'
-                            else
-                                specRampFiles = specRampFiles .. ' ' .. assignment['offset'] .. ' seconds before the timer'
+                    end
+                    --Build string of boss' phases
+                    local bossPhasesString = ''
+                    if next(ns.bosses[encounterId].phases[diffSlug]) == nil then
+                        bossPhasesString = 'This boss has no phases'
+                    else
+                        for i = 1, 10 do
+                            if ns.bosses[encounterId].phases[diffSlug][i] then
+                                local phaseTrigger = ns:FormatPhaseChangeString(ns.bosses[encounterId].phases[diffSlug][i])
+                                local triggerString = phaseTrigger.count
+                                if tonumber(phaseTrigger.count) == 1 then
+                                    triggerString = triggerString .. 'st '
+                                elseif tonumber(phaseTrigger.count) == 2 then
+                                    triggerString = triggerString .. 'nd '
+                                elseif tonumber(phaseTrigger.count) == 3 then
+                                    triggerString = triggerString .. 'rd '
+                                else
+                                    triggerString = triggerString .. 'th '
+                                end
+                                if phaseTrigger.event == 'SCC' then
+                                    triggerString = triggerString .. 'successful cast of'
+                                elseif phaseTrigger.event == 'SCS' then
+                                    triggerString = triggerString .. 'start of the cast of'
+                                elseif phaseTrigger.event == 'SAA' then
+                                    triggerString = triggerString .. 'aura application of'
+                                elseif phaseTrigger.event == 'SAR' then
+                                    triggerString = triggerString .. 'aura removal of'
+                                end
+                                triggerString = triggerString .. ' \'' .. C_Spell.GetSpellInfo(phaseTrigger.spell).name .. '\', spell id ' .. phaseTrigger.spell
+                                bossPhasesString = bossPhasesString .. '|cffffd100Phase ' .. i .. '|r\n' .. triggerString .. '\n\n'
                             end
-                            specRampFiles = specRampFiles .. '\n'
                         end
                     end
-                    --Add the string description of the ramps to as content in the spec option
-                    specTable.args.ramps.args.desc = {
-                        type = "description",
-                        name = specRampFiles,
-                        fontSize = "medium"
-                    }
                     --Add the ramp types for this fight to the appropriate difficulty in the specTable
                     specTable.args.fights.args[diffSlug].args[tostring(encounterId)] = {
                         type = "group",
                         name = encounter.name,
-                        args = rampTypeOptions,
-                        order = encounterId
+                        order = encounterId,
+                        childGroups = "tab",
+                        args = {
+                            timings = {
+                                type = "group",
+                                name = "Timings",
+                                order = 1,
+                                args = rampTypeOptions
+                            },
+                            phases = {
+                                type = "group",
+                                name = "Phases",
+                                order = 2,
+                                args = {
+                                    phasesString = {
+                                        type = "description",
+                                        name = bossPhasesString,
+                                        fontSize = "medium"
+                                    }
+                                }
+                            }
+                        }
                     }
                 end
             end

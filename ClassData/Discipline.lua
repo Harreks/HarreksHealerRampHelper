@@ -16,7 +16,10 @@ ns['Discipline'] = {
             }
         }
     },
-    ['cooldowns'] = {}
+    ['cooldowns'] = {
+        [472433] = 'Evangelism',
+        [62618] = 'Barrier'
+    }
 }
 
 ns['Discipline']['rampTypes'] = function()
@@ -42,6 +45,19 @@ ns['Discipline']['rampTypes'] = function()
             {
                 ['text'] = 'Evangelism',
                 ['icon'] = 135895,
+                ['offset'] = 0
+            }
+        },
+        ['Barrier'] = {
+            {
+                ['text'] = 'Barrier Soon',
+                ['icon'] = 253400,
+                ['offset'] = 3,
+                ['showTimer'] = true
+            },
+            {
+                ['text'] = 'Barrier',
+                ['icon'] = 253400,
                 ['offset'] = 0
             }
         }
