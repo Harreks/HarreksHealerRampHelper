@@ -244,6 +244,7 @@ end
 
 --Sets up the phase changing condition for the current fight
 function ns:SetupPhaseChanges(phaseChangesTable)
+    ns.phaseTimerData.phaseTriggerCounter = {}
     local phaseChanges = {}
     for phase, trigger in pairs(phaseChangesTable) do
         phaseChanges[phase] = ns:FormatPhaseChangeString(trigger)
