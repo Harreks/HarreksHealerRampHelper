@@ -167,11 +167,31 @@ function ns:SetupTimings(event, encounterId, difficultyId)
     --Init fight assignments Table
     ns.fightAssignments = {}
     local rampTypesTable = ns[specName]['rampTypes']()
+    local noteAssignments = {}
+    --If Read From Note mode is enabled, grab the current note text and format it
+    if event == "ENCOUNTER_START" and HarreksRampHelperDB.options.readFromNote then
+        local mrtNoteText = _G.VMRT.Note.Text1
+        local activeNote = ns:ConvertNoteToTable(mrtNoteText, specName, encounterId, ns.difficulties[difficultyId]['slug'])
+        for spell, timings in pairs(activeNote) do
+            local rampType = ns[specName]['cooldowns'][tonumber(spell)]
+            if rampType then
+                local timingsString = ""
+                for _, time in pairs(timings) do
+                    timingsString = timingsString .. time .. '\n'
+                end
+                noteAssignments[rampType] = timingsString
+            end
+        end
+    end
     for type, _ in pairs(rampTypesTable) do
         local fightTimings
         if event == "ENCOUNTER_START" then
-            local difficultySlug = ns.difficulties[difficultyId]['slug']
-            fightTimings =  HarreksRampHelperDB[specName][difficultySlug][tostring(encounterId)][type]
+            if HarreksRampHelperDB.options.readFromNote then
+                fightTimings = noteAssignments[type]
+            else
+                local difficultySlug = ns.difficulties[difficultyId]['slug']
+                fightTimings =  HarreksRampHelperDB[specName][difficultySlug][tostring(encounterId)][type]
+            end
         elseif HarreksRampHelperDB.testing.testMode then
             fightTimings = HarreksRampHelperDB[specName].testTimers[type]
         end
@@ -186,7 +206,7 @@ function ns:SetupTimings(event, encounterId, difficultyId)
             for _, timing in pairs(phaseTimings) do
                 for _, assignment in pairs(rampTypesTable[type]) do
                     local assignmentTime = ns:CutDecimals(timing - assignment['offset'])
-                    if assignmentTime >= 0 then
+                    if assignmentTime >= 0 and (not HarreksRampHelperDB.options.preReqsOnly or (HarreksRampHelperDB.options.preReqsOnly and assignment['preRequisite'])) then
                         if assignment['dynamic'] then
                             ns.fightAssignments[index]['dynamic'][assignmentTime] = {
                                 ['text'] = assignment['text'],

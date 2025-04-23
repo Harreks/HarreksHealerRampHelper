@@ -33,23 +33,27 @@ ns['Preservation']['rampTypes'] = function()
                 ['icon'] = 5927629,
                 ['dynamic'] = true,
                 ['spellId'] = 443328,
-                ['offset'] = 0
+                ['offset'] = 0,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Save TA',
                 ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861)),
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Save DB',
                 ['icon'] = 4622454,
-                ['offset'] = 30
+                ['offset'] = 30,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Ramp for Stasis',
                 ['icon'] = 4630480,
-                ['offset'] = 18
+                ['offset'] = 18,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Stasis Soon',
@@ -68,12 +72,14 @@ ns['Preservation']['rampTypes'] = function()
                 ['text'] = 'Save TA',
                 ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
-                ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861))
+                ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861)),
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Ramp for EC',
                 ['icon'] = 4630480,
-                ['offset'] = 18
+                ['offset'] = 18,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'EC Soon',
@@ -132,23 +138,27 @@ ns['Preservation']['rampTypes'] = function()
                 ['icon'] = 5927629,
                 ['dynamic'] = true,
                 ['spellId'] = 443328,
-                ['offset'] = 0
+                ['offset'] = 0,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Save TA',
                 ['tts'] = 'Save tea a',
                 ['icon'] = 4630480,
                 ['offset'] = 18 + (ns:GetRealCooldown('Preservation', 373861)),
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Save DB',
                 ['icon'] = 4622454,
-                ['offset'] = 30
+                ['offset'] = 30,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Ramp for Double Engulf',
                 ['icon'] = 4630480,
-                ['offset'] = 18
+                ['offset'] = 18,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Double Engulf Soon',

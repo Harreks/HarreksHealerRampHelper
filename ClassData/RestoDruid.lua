@@ -14,7 +14,8 @@ ns['RestoDruid']['rampTypes'] = function()
             {
                 ['text'] = 'Start Ramping',
                 ['icon'] = 136081,
-                ['offset'] = 15
+                ['offset'] = 15,
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Flourish Soon',

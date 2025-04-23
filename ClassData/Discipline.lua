@@ -18,6 +18,7 @@ ns['Discipline'] = {
     },
     ['cooldowns'] = {
         [472433] = 'Evangelism',
+        [421453] = 'Ultimate Penitence',
         [62618] = 'Barrier'
     }
 }
@@ -30,21 +31,77 @@ ns['Discipline']['rampTypes'] = function()
                 ['icon'] = 1386546,
                 ['dynamic'] = true,
                 ['spellId'] = 194509,
-                ['offset'] = 7 * (ns:GetRealCooldown('Discipline', 61304))
+                ['offset'] = ns:GetRealCooldown('Discipline', 61304),
+                ['preRequisite'] = true
             },
             {
-                ['text'] = 'Start Ramping',
+                ['text'] = 'Ramp for Evang',
+                ['tts'] = 'Ramp for Evangelism',
                 ['icon'] = 135940,
-                ['offset'] = 11 * (ns:GetRealCooldown('Discipline', 61304))
+                ['offset'] = 11 * (ns:GetRealCooldown('Discipline', 61304)),
+                ['preRequisite'] = true
             },
             {
                 ['text'] = 'Double Radiance',
                 ['icon'] = 1386546,
-                ['offset'] = 2 * (ns:GetRealCooldown('Discipline', 61304))
+                ['offset'] = 2 * (ns:GetRealCooldown('Discipline', 61304)),
             },
             {
                 ['text'] = 'Evangelism',
                 ['icon'] = 135895,
+                ['offset'] = 0
+            }
+        },
+        ['Ultimate Penitence'] = {
+            {
+                ['text'] = 'Ramp for UP',
+                ['tts'] = 'Ramp for Ultimate Penitence',
+                ['icon'] = 1060982,
+                ['offset'] = 6 * (ns:GetRealCooldown('Discipline', 61304)),
+                ['preRequisite'] = true
+            },
+            {
+                ['text'] = 'Save one Radiance',
+                ['icon '] = 1386546,
+                ['offset'] = ns:GetRealCooldown('Discipline', 194509),
+                ['preRequisite'] = true
+            },
+            {
+                ['text'] = 'UP Soon',
+                ['tts'] = 'uppies soon',
+                ['icon'] = 253400,
+                ['offset'] = 3,
+                ['showTimer'] = true
+            },
+            {
+                ['text'] = 'Ultimate Penitence',
+                ['icon'] = 253400,
+                ['offset'] = 0
+            }
+        },
+        ['Double Radiance'] = {
+            {
+                ['text'] = 'Save Radiances',
+                ['icon'] = 1386546,
+                ['dynamic'] = true,
+                ['spellId'] = 194509,
+                ['offset'] = ns:GetRealCooldown('Discipline', 61304),
+                ['preRequisite'] = true
+            },
+            {
+                ['text'] = 'Ramp for Double Radiance',
+                ['icon'] = 135940,
+                ['offset'] = 11 * (ns:GetRealCooldown('Discipline', 61304)),
+                ['preRequisite'] = true
+            },
+            {
+                ['text'] = 'Double Radiance',
+                ['icon'] = 1386546,
+                ['offset'] = 2 * (ns:GetRealCooldown('Discipline', 61304)),
+            },
+            {
+                ['text'] = 'Heal Now',
+                ['icon'] = 136224,
                 ['offset'] = 0
             }
         },

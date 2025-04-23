@@ -1,8 +1,8 @@
-## Interface: 110100
-## Version: 1.0.5
+## Interface: 110105
+## Version: 1.1.0
 ## Title: Harreks Healer Ramp Helper
-## IconTexture: 450907
-## Notes: Tool to help healers ramp
+## IconTexture: Interface/Addons/HarreksHealerRampHelper/HRH_logo
+## Notes: Automatic reminder creator for ramp healers in raid
 ## Author: Harrek
 ## SavedVariables: HarreksRampHelperDB
 

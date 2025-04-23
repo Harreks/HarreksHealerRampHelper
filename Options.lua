@@ -16,7 +16,9 @@ local defaultOptions = {
         ['ttsEnabled'] = true,
         ['ttsVoice'] = 1,
         ['ttsRate'] = -1,
-        ['ttsVolume'] = 100
+        ['ttsVolume'] = 100,
+        ['preReqsOnly'] = false,
+        ['readFromNote'] = false
     },
     ['import'] = {
         ['fight'] = nil,
@@ -313,7 +315,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             width = defaultOptionWidth,
                             order = 32,
                             get = function() return HarreksRampHelperDB.options.ttsEnabled end,
-                            set = function(_, ttsEnabled) HarreksRampHelperDB.options.ttsEnabled = ttsEnabled end
+                            set = function(_, value) HarreksRampHelperDB.options.ttsEnabled = value end
                         },
                         ttsVoice = {
                             type = "select",
@@ -357,6 +359,31 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             bigStep = 5,
                             get = function() return HarreksRampHelperDB.options.ttsVolume end,
                             set = function(_, volume) HarreksRampHelperDB.options.ttsVolume = volume end
+                        },
+                        extraHeader = {
+                            type = "header",
+                            name = "Extra Options",
+                            order = 40
+                        },
+                        preReqsOnly = {
+                            type = "toggle",
+                            name = "Only Prerequisites Mode",
+                            desc = "All the setup steps for a ramp are considered prerequisites, while the final cooldown button press is not. In this mode you will still be shown all " ..
+                                "the setup steps, but not the final warning to consume the ramp. In case you have another addon or weakaura that warns you of that.",
+                            width = defaultOptionWidth,
+                            order = 41,
+                            get = function() return HarreksRampHelperDB.options.preReqsOnly end,
+                            set = function(_, value) HarreksRampHelperDB.options.preReqsOnly = value end
+                        },
+                        readFromNote = {
+                            type = "toggle",
+                            name = "Read From Active MRT Note",
+                            desc = "When the Read From Note mode is enabled, your manually input or imported timings are ignored, and instead the addon will grab your currently active MRT note " ..
+                                "at the moment the boss is pulled, and create the assignments from that",
+                            width = defaultOptionWidth,
+                            order = 42,
+                            get = function() return HarreksRampHelperDB.options.readFromNote end,
+                            set = function(_, value) HarreksRampHelperDB.options.readFromNote = value end
                         }
                     }
                 },
