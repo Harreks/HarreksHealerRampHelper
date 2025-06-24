@@ -521,7 +521,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                     if containsToonName then
                                         return true
                                     else
-                                        return "The imported text doesn't contain the name of your current character, no timings would be imported. Make sure the MRT Note you are importing has " ..
+                                        return "The imported text doesn't contain the name of your current character, no timings would be imported. Make sure you are importing an MRT Note that has " ..
                                         "correctly formatted assignments that match your in-game name."
                                     end
                                 end
