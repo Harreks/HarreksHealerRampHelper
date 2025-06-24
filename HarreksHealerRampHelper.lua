@@ -314,6 +314,11 @@ function ns:SendTts(text)
     end
 end
 
+--Outputs and error message to chat. This is our choice instead of making the addon crash and stop working
+function ns:WriteOutput(text)
+    print('|cffff680aHarrek\'s Healer Ramp Helper:|r ' .. text)
+end
+
 --[[Format Functions]]--
 --Removes decimals from a number
 function ns:CutDecimals(time)
@@ -363,7 +368,8 @@ function ns:ConvertNoteToTable(noteString, spec, fightId, diffSlug)
     local timesTable = {}
     if noteString then
         for line in noteString:gmatch("[^\r\n]+") do
-            if line:find(toonName) then
+            local lineError = nil
+            if line:find(toonName) and line:find("{spell:") then
                 local assignment = {
                     time = nil,
                     spells = {}
@@ -390,7 +396,11 @@ function ns:ConvertNoteToTable(noteString, spec, fightId, diffSlug)
                                     break
                                 end
                             end
-                            time = time:gsub(values.track, values.phase)
+                            if values.phase then
+                                time = time:gsub(values.track, values.phase)
+                            else
+                                lineError = true
+                            end
                         end
                         assignment.time = time
                         break
@@ -399,12 +409,16 @@ function ns:ConvertNoteToTable(noteString, spec, fightId, diffSlug)
                 for spell in line:gmatch(toonName .. " %{spell:(%d+)%}") do
                     table.insert(assignment.spells, spell)
                 end
-                for _, spell in pairs(assignment.spells) do
-                    if ns[spec]['cooldowns'][tonumber(spell)] then
-                        if timesTable[spell] == nil then
-                            timesTable[spell] = {}
+                if lineError then
+                    ns:WriteOutput("The line |cffffd100" .. line .. "|r isn't properly formatted or refers to a boss phase not set up, it is being ignored.")
+                else
+                    for _, spell in pairs(assignment.spells) do
+                        if ns[spec]['cooldowns'][tonumber(spell)] then
+                            if timesTable[spell] == nil then
+                                timesTable[spell] = {}
+                            end
+                            table.insert(timesTable[spell], assignment.time)
                         end
-                        table.insert(timesTable[spell], assignment.time)
                     end
                 end
             end

@@ -515,7 +515,16 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 multiline = 15,
                                 width = "full",
                                 set = function(_, val) HarreksRampHelperDB.import.importText = val end,
-                                get = function() return HarreksRampHelperDB.import.importText end
+                                get = function() return HarreksRampHelperDB.import.importText end,
+                                validate = function(_, val)
+                                    local containsToonName = string.find(val, UnitName("player"))
+                                    if containsToonName then
+                                        return true
+                                    else
+                                        return "The imported text doesn't contain the name of your current character, no timings would be imported. Make sure the MRT Note you are importing has " ..
+                                        "correctly formatted assignments that match your in-game name."
+                                    end
+                                end
                             },
                             importButton = {
                                 type = "execute",
@@ -542,7 +551,8 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                                 HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][rampType] = timingsString
                                             end
                                         end
-                                        HarreksRampHelperDB.import.importText = 'Successfully imported ' .. specName .. ' timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId].name
+                                        HarreksRampHelperDB.import.importText = '';
+                                        ns:WriteOutput('Successfully imported ' .. specName .. ' timings for ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId].name)
                                     end
                                 end
                             },
@@ -602,7 +612,17 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             desc = "Input the timings you will execute this ramp on, in the mm:ss format, each time in a new line",
                             width = "full",
                             set = function(_, val) HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)][type] = val end,
-                            get = function() return HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)][type] end
+                            get = function() return HarreksRampHelperDB[specName][diffSlug][tostring(encounterId)][type] end,
+                            validate = function(_, val)
+                                local valid = not string.find(val, "[{}SCAR]")
+                                print(valid)
+                                if valid then
+                                    return true
+                                else
+                                    return "Your input contains an invalid character. Your times are supposed to look like this:\n\n01:25\n00:50, p2\n\nIf your input contains parts like this:\n\n" ..
+                                    "{time:00:25,SCC:468794:1}\n\nThen it is in MRT Note format, and you should import it instead."
+                                end
+                            end
                         }
                         --Add this type of ramp to the test timers
                         specTestTimers.args[type] = {
