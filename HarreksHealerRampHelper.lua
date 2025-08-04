@@ -170,7 +170,14 @@ function ns:SetupTimings(event, encounterId, difficultyId)
     local noteAssignments = {}
     --If Read From Note mode is enabled, grab the current note text and format it
     if event == "ENCOUNTER_START" and HarreksRampHelperDB.options.readFromNote then
-        local mrtNoteText = _G.VMRT.Note.Text1
+        local mrtNoteArray = {
+            HarreksRampHelperDB.options.readFromNote        and _G.VMRT.Note.Text1 or "",
+            HarreksRampHelperDB.options.mrtPersonalNote     and _G.VMRT.Note.SelfText or ""
+        }
+        local mrtNoteText = table.concat(mrtNoteArray, "\n")
+                    :gsub("^%s+", "")
+                    :gsub("%s+$", "")
+                    :gsub("\n%s*\n", "\n")
         local activeNote = ns:ConvertNoteToTable(mrtNoteText, specName, encounterId, ns.difficulties[difficultyId]['slug'])
         for spell, timings in pairs(activeNote) do
             local rampType = ns[specName]['cooldowns'][tonumber(spell)]

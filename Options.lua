@@ -18,7 +18,8 @@ local defaultOptions = {
         ['ttsRate'] = -1,
         ['ttsVolume'] = 100,
         ['preReqsOnly'] = false,
-        ['readFromNote'] = false
+        ['readFromNote'] = false,
+        ['mrtPersonalNote'] = false
     },
     ['import'] = {
         ['fight'] = nil,
@@ -54,7 +55,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
         ns.infoFrame.text:SetScale(HarreksRampHelperDB.options.textSize)
         ns.infoFrame.timer:SetScale(HarreksRampHelperDB.options.timerSize)
         ns.infoFrame.icon:SetSize(HarreksRampHelperDB.options.iconSizeW, HarreksRampHelperDB.options.iconSizeH)
-        local defaultOptionWidth = 1.25
+        local defaultOptionWidth = 1.2
         ns:ResetDisplay()
 
         --Initialize options table
@@ -360,10 +361,38 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             get = function() return HarreksRampHelperDB.options.ttsVolume end,
                             set = function(_, volume) HarreksRampHelperDB.options.ttsVolume = volume end
                         },
+                        mrtHeader = {
+                            type = "header",
+                            name = "Using MRT Note",
+                            order = 40
+                        },
+                        mrtDescription = {
+                            type = "description",
+                            name = "When one or both of options below is enabled, your manually input or imported timings are ignored, and instead the addon Will grab from the selected MRT option(s).",
+                            order = 41
+                        },
+                        readFromNote = {
+                            type = "toggle",
+                            name = "Read From Main MRT Note",
+                            desc = "Load assignments from the main MRT Note.",
+                            width = defaultOptionWidth,
+                            order = 42,
+                            get = function() return HarreksRampHelperDB.options.readFromNote end,
+                            set = function(_, value) HarreksRampHelperDB.options.readFromNote = value end
+                        },
+                        mrtPersonalNote = {
+                            type = "toggle",
+                            name = "Read From Personal MRT Note",
+                            desc = "Load assignments from the personal MRT Note.",
+                            width = defaultOptionWidth,
+                            order = 43,
+                            get = function() return HarreksRampHelperDB.options.mrtPersonalNote end,
+                            set = function(_, value) HarreksRampHelperDB.options.mrtPersonalNote = value end
+                        },
                         extraHeader = {
                             type = "header",
                             name = "Extra Options",
-                            order = 40
+                            order = 50
                         },
                         preReqsOnly = {
                             type = "toggle",
@@ -371,19 +400,9 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             desc = "All the setup steps for a ramp are considered prerequisites, while the final cooldown button press is not. In this mode you will still be shown all " ..
                                 "the setup steps, but not the final warning to consume the ramp. In case you have another addon or weakaura that warns you of that.",
                             width = defaultOptionWidth,
-                            order = 41,
+                            order = 51,
                             get = function() return HarreksRampHelperDB.options.preReqsOnly end,
                             set = function(_, value) HarreksRampHelperDB.options.preReqsOnly = value end
-                        },
-                        readFromNote = {
-                            type = "toggle",
-                            name = "Read From Active MRT Note",
-                            desc = "When the Read From Note mode is enabled, your manually input or imported timings are ignored, and instead the addon will grab your currently active MRT note " ..
-                                "at the moment the boss is pulled, and create the assignments from that",
-                            width = defaultOptionWidth,
-                            order = 42,
-                            get = function() return HarreksRampHelperDB.options.readFromNote end,
-                            set = function(_, value) HarreksRampHelperDB.options.readFromNote = value end
                         }
                     }
                 },
@@ -478,6 +497,11 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                         name = "Import/Export",
                         order = 3,
                         args = {
+                            importHeader = {
+                                type = "header",
+                                name = "MRT Note import and export",
+                                order = 0
+                            },
                             importFight = {
                                 type = "select",
                                 name = "Fight",
@@ -508,10 +532,28 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 get = function() return HarreksRampHelperDB.import.difficulty end,
                                 set = function(_, diffId) HarreksRampHelperDB.import.difficulty = diffId end
                             },
+                            pasteDefault = {
+                                type = "execute",
+                                name = "Paste Default Assignments For This Boss",
+                                order = 3,
+                                width = defaultOptionWidth * 2,
+                                func = function()
+                                    local fightId = HarreksRampHelperDB.import.fight
+                                    local diffId = HarreksRampHelperDB.import.difficulty
+                                    local diffSlug = ns.difficulties[diffId].slug
+                                    local defaultText = ns[specName]['defaultAssignments'][fightId]['assignments'][diffSlug]
+                                    if defaultText == "" then
+                                        ns:WriteOutput('There are currently no default assignments setup for ' .. specName .. ' on ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId].name)
+                                    else
+                                        HarreksRampHelperDB.import.importText = defaultText
+                                        ns:WriteOutput('Pasted default assignments for ' .. specName .. ' on ' .. ns.difficulties[diffId].name .. ' ' .. ns.bosses[fightId].name)
+                                    end
+                                end
+                            },
                             importText = {
                                 type = "input",
                                 name = "Import Text",
-                                order = 3,
+                                order = 4,
                                 multiline = 15,
                                 width = "full",
                                 set = function(_, val) HarreksRampHelperDB.import.importText = val end,
@@ -529,7 +571,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             importButton = {
                                 type = "execute",
                                 name = "Import Timers",
-                                order = 4,
+                                order = 5,
                                 width = defaultOptionWidth,
                                 func = function()
                                     local fightId = HarreksRampHelperDB.import.fight
@@ -559,7 +601,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             exportButton = {
                                 type = "execute",
                                 name = "Export Timers",
-                                order = 5,
+                                order = 6,
                                 width = defaultOptionWidth,
                                 func = function()
                                     local fightId = HarreksRampHelperDB.import.fight
@@ -569,6 +611,60 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                         local timingsString = ns:ConvertTimingsToNote(specName, diffSlug, fightId)
                                         HarreksRampHelperDB.import.importText = timingsString
                                     end
+                                end
+                            },
+                            defaultsHeader = {
+                                type = "header",
+                                name = "Default Assignments",
+                                order = 7
+                            },
+                            defaultsDescription = {
+                                type = "description",
+                                name = "The addon comes with some default assignments saved based on recommended timings for each spec, using this option will " ..
+                                    "import all the currently configured default assignments for all bosses for this specialization. " ..
+                                    "If you want to import them for a single boss instead use the button located below the boss selection dropdowns. " ..
+                                    "|cffff680aWarning:|r this will overwrite any assignments currently set up",
+                                order = 8,
+                                fontSize = "medium"
+                            },
+                            importAllDefaults = {
+                                type = "execute",
+                                name = "Import all default Assignments",
+                                order = 9,
+                                width = defaultOptionWidth * 2,
+                                func = function()
+                                    local importedBossList = ''
+                                    for fightId, fightData in pairs(ns.bosses) do
+                                        for diffId, diffData in pairs(ns.difficulties) do
+                                            local diffSlug = diffData.slug
+                                            local importText = ns[specName]['defaultAssignments'][fightId]['assignments'][diffSlug]
+                                            if importText ~= "" then
+                                                importedBossList = importedBossList .. ' - ' .. diffData.name .. ' ' .. fightData.name .. '\n'
+                                                local timers = ns:ConvertNoteToTable(importText, specName, fightId, diffSlug)
+                                                for type, _ in pairs(HarreksRampHelperDB[specName][diffSlug][tostring(fightId)]) do
+                                                    HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][type] = ''
+                                                end
+                                                for spell, timings in pairs(timers) do
+                                                    local rampType = ns[specName]['cooldowns'][tonumber(spell)]
+                                                    if rampType then
+                                                        local timingsString = ''
+                                                        for _, time in pairs(timings) do
+                                                            timingsString = timingsString .. time .. '\n'
+                                                        end
+                                                        HarreksRampHelperDB[specName][diffSlug][tostring(fightId)][rampType] = timingsString
+                                                    end
+                                                end
+                                                HarreksRampHelperDB.import.importText = '';
+                                            end
+                                        end
+                                    end
+                                    local resultText = ''
+                                    if importedBossList == '' then
+                                        resultText = "There are currently no default assignments to import for your spec."
+                                    else
+                                        resultText = "Successfully imported default assignments for the following bosses:\n" .. importedBossList
+                                    end
+                                    ns:WriteOutput(resultText)
                                 end
                             }
                         }
@@ -661,8 +757,11 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                                 elseif phaseTrigger.event == 'SAR' then
                                     triggerString = triggerString .. 'aura removal of'
                                 end
-                                triggerString = triggerString .. ' \'' .. C_Spell.GetSpellInfo(phaseTrigger.spell).name .. '\', spell id ' .. phaseTrigger.spell
-                                bossPhasesString = bossPhasesString .. '|cffffd100Phase ' .. i .. '|r\n' .. triggerString .. '\n\n'
+                                local spell = C_Spell.GetSpellInfo(phaseTrigger.spell)
+                                if spell then
+                                    triggerString = triggerString .. ' \'' .. C_Spell.GetSpellInfo(phaseTrigger.spell).name .. '\', spell id ' .. phaseTrigger.spell
+                                    bossPhasesString = bossPhasesString .. '|cffffd100Phase ' .. i .. '|r\n' .. triggerString .. '\n\n'
+                                end
                             end
                         end
                     end

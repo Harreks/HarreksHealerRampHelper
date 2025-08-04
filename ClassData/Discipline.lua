@@ -120,3 +120,62 @@ ns['Discipline']['rampTypes'] = function()
         }
     }
 end
+
+ns['Discipline']['defaultAssignments'] = {
+    [3017] = {
+        name = "Plexus Sentinel",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3018] = {
+        name = "Loomithar",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3019] = {
+        name = "Soulbinder Naazindhri",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3020] = {
+        name = "Forgeweaver Araz",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3021] = {
+        name = "The Soul Hunters",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3022] = {
+        name = "Fractillus",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3023] = {
+        name = "Nexus King Salhadaar",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    },
+    [3024] = {
+        name = "Dimensius the All-Devouring",
+        assignments = {
+            myth = "",
+            hero = ""
+        }
+    }
+}
