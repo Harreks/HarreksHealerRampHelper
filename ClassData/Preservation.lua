@@ -181,19 +181,19 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:00:28} - Harreks {spell:370537} \n" ..
-            "{time:00:36} - Harreks {spell:370564} \n" ..
-            "{time:01:02} - Harreks {spell:443328} \n" ..
-            "{time:00:23,SAA:1223364:2} - Harreks {spell:370960} \n" ..
-            "{time:00:57,SAA:1223364:2} - Harreks {spell:370537} \n" ..
-            "{time:01:06,SAA:1223364:2} - Harreks {spell:370564} \n" ..
-            "{time:01:31,SAA:1223364:2} - Harreks {spell:363534} \n" ..
-            "{time:00:57,SAA:1223364:3} - Harreks {spell:370537} \n" ..
-            "{time:01:06,SAA:1223364:3} - Harreks {spell:370564} \n" ..
-            "{time:00:24,SAA:1223364:4} - Harreks {spell:370960} \n" ..
-            "{time:00:59,SAA:1223364:4} - Harreks {spell:370537} \n" ..
-            "{time:01:10,SAA:1223364:4} - Harreks {spell:370564} \n" ..
-            "{time:01:36,SAA:1223364:4} - Harreks {spell:363534} \n"
+            "{time:00:28} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:36} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:02} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:23,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:57,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:06,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:31,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:00:57,SAA:1223364:3} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:06,SAA:1223364:3} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:24,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:59,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:10,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:36,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
     [3018] = {
@@ -201,19 +201,19 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:02:09} - Harreks {spell:443328} \n" ..
-            "{time:00:25} - Harreks {spell:370960} \n" ..
-            "{time:00:42} - Harreks {spell:443328} \n" ..
-            "{time:01:08} - Harreks {spell:363534} \n" ..
-            "{time:01:26} - Harreks {spell:370537} \n" ..
-            "{time:01:54,SAA:1228070:1} - Harreks {spell:370537} \n" ..
-            "{time:02:00,SAA:1228070:1} - Harreks {spell:370564} \n" ..
-            "{time:00:15,SAA:1228070:1} - Harreks {spell:370537} \n" ..
-            "{time:02:40,SAA:1228070:1} - Harreks {spell:443328} \n" ..
-            "{time:00:19,SAA:1228070:1} - Harreks {spell:370564} \n" ..
-            "{time:00:55,SAA:1228070:1} - Harreks {spell:443328} \n" ..
-            "{time:01:19,SAA:1228070:1} - Harreks {spell:370960} \n" ..
-            "{time:01:35,SAA:1228070:1} - Harreks {spell:363534} \n"
+            "{time:02:09} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:25} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:42} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:01:08} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:26} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:54,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:00,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:15,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:40,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:19,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:55,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:01:19,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:35,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
     [3019] = {
@@ -221,18 +221,18 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:02:28} - Harreks {spell:370537} \n" ..
-            "{time:03:16} - Harreks {spell:443328} \n" ..
-            "{time:03:37} - Harreks {spell:363534} \n" ..
-            "{time:03:59} - Harreks {spell:370537} \n" ..
-            "{time:00:26} - Harreks {spell:363534} \n" ..
-            "{time:05:00} - Harreks {spell:370960} \n" ..
-            "{time:05:47} - Harreks {spell:370537} \n" ..
-            "{time:06:29} - Harreks {spell:443328} \n" ..
-            "{time:06:47} - Harreks {spell:363534} \n" ..
-            "{time:07:31} - Harreks {spell:370537} \n" ..
-            "{time:00:47} - Harreks {spell:370537} \n" ..
-            "{time:01:27} - Harreks {spell:370960} \n"
+            "{time:02:28} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:16} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:03:37} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:03:59} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:26} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:05:00} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:05:47} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:06:29} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:06:47} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:07:31} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:47} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:27} - " .. GetUnitName("player", false) .. " {spell:370960} \n"
         }
     },
     [3020] = {
@@ -240,13 +240,13 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:02:30} - Harreks {spell:370537} \n" ..
-            "{time:02:35} - Harreks {spell:370564} \n" ..
-            "{time:00:37} - Harreks {spell:370537} \n" ..
-            "{time:01:22} - Harreks {spell:370960} \n" ..
-            "{time:02:26,SCC:1230529:1} - Harreks {spell:370960} \n" ..
-            "{time:02:36,SCC:1230529:1} - Harreks {spell:363534} \n" ..
-            "{time:01:15,SCC:1230529:1} - Harreks {spell:370537} \n"
+            "{time:02:30} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:35} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:37} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:22} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:26,SCC:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:36,SCC:1230529:1} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:15,SCC:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n"
         }
     },
     [3021] = {
@@ -254,15 +254,15 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:01:40} - Harreks {spell:370960} \n" ..
-            "{time:02:38} - Harreks {spell:370537} \n" ..
-            "{time:03:43} - Harreks {spell:443328} \n" ..
-            "{time:04:40} - Harreks {spell:370537} \n" ..
-            "{time:05:14} - Harreks {spell:363534} \n" ..
-            "{time:05:45} - Harreks {spell:370960} \n" ..
-            "{time:00:36} - Harreks {spell:370537} \n" ..
-            "{time:06:37} - Harreks {spell:370537} \n" ..
-            "{time:01:06} - Harreks {spell:363534} \n"
+            "{time:01:40} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:38} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:43} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:04:40} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:05:14} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:05:45} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:36} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:06:37} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:06} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
     [3022] = {
@@ -270,17 +270,17 @@ ns['Preservation']['defaultAssignments'] = {
         assignments = {
             myth = "",
             hero =
-            "{time:02:00} - Harreks {spell:443328} \n" ..
-            "{time:02:31} - Harreks {spell:370537} \n" ..
-            "{time:02:40} - Harreks {spell:370564} \n" ..
-            "{time:03:20} - Harreks {spell:363534} \n" ..
-            "{time:03:48} - Harreks {spell:443328} \n" ..
-            "{time:04:32} - Harreks {spell:370537} \n" ..
-            "{time:04:40} - Harreks {spell:370564} \n" ..
-            "{time:00:31} - Harreks {spell:370537} \n" ..
-            "{time:05:20} - Harreks {spell:370960} \n" ..
-            "{time:00:40} - Harreks {spell:370564} \n" ..
-            "{time:01:20} - Harreks {spell:370960} \n"
+            "{time:02:00} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:02:31} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:40} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:03:20} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:03:48} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:04:32} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:04:40} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:31} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:05:20} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:40} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:20} - " .. GetUnitName("player", false) .. " {spell:370960} \n"
         }
     },
     [3023] = {
