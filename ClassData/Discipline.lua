@@ -122,56 +122,56 @@ ns['Discipline']['rampTypes'] = function()
 end
 
 ns['Discipline']['defaultAssignments'] = {
-    [3017] = {
+    [3129] = {
         name = "Plexus Sentinel",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3018] = {
+    [3131] = {
         name = "Loomithar",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3019] = {
+    [3130] = {
         name = "Soulbinder Naazindhri",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3020] = {
+    [3132] = {
         name = "Forgeweaver Araz",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3021] = {
+    [3122] = {
         name = "The Soul Hunters",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3022] = {
+    [3133] = {
         name = "Fractillus",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3023] = {
+    [3134] = {
         name = "Nexus King Salhadaar",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3024] = {
+    [3135] = {
         name = "Dimensius the All-Devouring",
         assignments = {
             myth = "",

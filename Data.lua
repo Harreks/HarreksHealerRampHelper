@@ -8,7 +8,7 @@ ns.specs = {
 }
 
 ns.bosses = {
-    [3017] = {
+    [3129] = {
         name = "Plexus Sentinel",
         phases = {
             ["myth"] = {
@@ -29,7 +29,7 @@ ns.bosses = {
             }
         }
     },
-    [3018] = {
+    [3131] = {
         name = "Loomithar",
         phases = {
             ["myth"] = {
@@ -40,14 +40,14 @@ ns.bosses = {
             }
         }
     },
-    [3019] = {
+    [3130] = {
         name = "Soulbinder Naazindhri",
         phases = {
             ["myth"] = {},
             ["hero"] = {}
         }
     },
-    [3020] = {
+    [3132] = {
         name = "Forgeweaver Araz",
         phases = {
             ["myth"] = {
@@ -60,28 +60,28 @@ ns.bosses = {
             }
         }
     },
-    [3021] = {
+    [3122] = {
         name = "The Soul Hunters",
         phases = {
             ["myth"] = {},
             ["hero"] = {}
         }
     },
-    [3022] = {
+    [3133] = {
         name = "Fractillus",
         phases = {
             ["myth"] = {},
             ["hero"] = {}
         }
     },
-    [3023] = {
+    [3134] = {
         name = "Nexus King Salhadaar",
         phases = {
             ["myth"] = {},
             ["hero"] = {}
         }
     },
-    [3024] = {
+    [3135] = {
         name = "Dimensius the All-Devouring",
         phases = {
             ["myth"] = {},

@@ -176,7 +176,7 @@ ns['Preservation']['rampTypes'] = function()
 end
 
 ns['Preservation']['defaultAssignments'] = {
-    [3017] = {
+    [3129] = {
         name = "Plexus Sentinel",
         assignments = {
             myth = "",
@@ -196,7 +196,7 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:36,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
-    [3018] = {
+    [3131] = {
         name = "Loomithar",
         assignments = {
             myth = "",
@@ -216,7 +216,7 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:35,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
-    [3019] = {
+    [3130] = {
         name = "Soulbinder Naazindhri",
         assignments = {
             myth = "",
@@ -235,7 +235,7 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:27} - " .. GetUnitName("player", false) .. " {spell:370960} \n"
         }
     },
-    [3020] = {
+    [3132] = {
         name = "Forgeweaver Araz",
         assignments = {
             myth = "",
@@ -249,7 +249,7 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:15,SCC:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n"
         }
     },
-    [3021] = {
+    [3122] = {
         name = "The Soul Hunters",
         assignments = {
             myth = "",
@@ -265,7 +265,7 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:06} - " .. GetUnitName("player", false) .. " {spell:363534} \n"
         }
     },
-    [3022] = {
+    [3133] = {
         name = "Fractillus",
         assignments = {
             myth = "",
@@ -283,14 +283,14 @@ ns['Preservation']['defaultAssignments'] = {
             "{time:01:20} - " .. GetUnitName("player", false) .. " {spell:370960} \n"
         }
     },
-    [3023] = {
+    [3134] = {
         name = "Nexus King Salhadaar",
         assignments = {
             myth = "",
             hero = ""
         }
     },
-    [3024] = {
+    [3135] = {
         name = "Dimensius the All-Devouring",
         assignments = {
             myth = "",
