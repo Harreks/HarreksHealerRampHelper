@@ -287,14 +287,50 @@ ns['Preservation']['defaultAssignments'] = {
         name = "Nexus King Salhadaar",
         assignments = {
             myth = "",
-            hero = ""
+            hero =
+            "{time:01:57} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:21} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:26} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:04:28} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:04:35} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:00:58} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:01:03} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:07} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:37} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:52,SAR:1228265:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:18,SAR:1228265:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:42,SAR:1228265:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:57,SAR:1228265:1} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:12,SAR:1228265:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n"
         }
     },
     [3135] = {
         name = "Dimensius the All-Devouring",
         assignments = {
             myth = "",
-            hero = ""
+            hero =
+            "{time:01:50} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:02:02} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:12} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:15} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:34} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:45} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:15} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:01:31} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:27,SAA:1246143:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:30,SAA:1246143:1} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:44,SAA:1246143:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:48,SAA:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:44,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:02:15,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:02:45,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:03:07,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:23,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:03:56,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:32,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:37,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:08,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:28,SAR:1246143:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n"
         }
     }
 }

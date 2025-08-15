@@ -1,6 +1,7 @@
 --Namespace
 local _, ns = ...
 local next = next
+local version = "1.2.3"
 local defaultOptions = {
     ['testing'] = {
         ['testMode'] = false
@@ -79,7 +80,7 @@ addonLoader:SetScript("OnEvent", function(self, event, name)
                             "turn on Testing Mode, which will pull from the test timers for your spec when you start combat.\n\nTo note, we do not currently support automatically grabbing " ..
                             "your assigned timers from an MRT note, but are working on implementing this. For the time being, you have to write down your ramp timings in the appropriate window " ..
                             "for the addon to work.\n\nIf you have any comment or question, feel free to let me know in any of the places listed below, and thank you for using the addon." ..
-                            "\n\n-Harrek\n\n",
+                            "\n\n-Harrek\n\nAddon Version: " .. version .. "\n\n",
                             order = 1,
                             fontSize = "medium"
                         },
