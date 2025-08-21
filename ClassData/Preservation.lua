@@ -179,7 +179,27 @@ ns['Preservation']['defaultAssignments'] = {
     [3129] = {
         name = "Plexus Sentinel",
         assignments = {
-            myth = "",
+            myth =
+            "{time:00:27} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:48} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:58} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:30,SAR:1223364:1} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:34,SAR:1223364:1} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:00:17,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:25,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:33,SAA:1223364:2} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:36,SAR:1223364:2} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:42,SAR:1223364:2} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:17,SAA:1223364:3} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:25,SAA:1223364:3} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:14,SAA:1223364:3} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:36,SAR:1223364:3} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:00:43,SAR:1223364:3} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:00:18,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:25,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:46,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:14,SAA:1223364:4} - " .. GetUnitName("player", false) .. " {spell:443328} \n"
+            ,
             hero =
             "{time:00:28} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
             "{time:00:36} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
@@ -219,7 +239,28 @@ ns['Preservation']['defaultAssignments'] = {
     [3130] = {
         name = "Soulbinder Naazindhri",
         assignments = {
-            myth = "",
+            myth =
+            "{time:01:58} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:15} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:03:33} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:39} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:03:53} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:26} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:04:28} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:32} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:05:26} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:05:32} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:05:32} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:06:03} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:06:23} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:06:58} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:00:45} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:07:30} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:07:56} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:03} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:09} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:23} - " .. GetUnitName("player", false) .. " {spell:443328} \n"
+            ,
             hero =
             "{time:02:28} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
             "{time:03:16} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
