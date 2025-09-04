@@ -219,7 +219,26 @@ ns['Preservation']['defaultAssignments'] = {
     [3131] = {
         name = "Loomithar",
         assignments = {
-            myth = "",
+            myth =
+            "{time:01:54} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:02:11} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:02:18} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:19} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:10} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:03:40} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:28} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:52} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:01:00} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:54,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:02:14,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:15,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:34,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:02:59,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:34,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:54,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:19,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:34,SAA:1228070:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n"
+            ,
             hero =
             "{time:02:09} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
             "{time:00:25} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
@@ -279,7 +298,25 @@ ns['Preservation']['defaultAssignments'] = {
     [3132] = {
         name = "Forgeweaver Araz",
         assignments = {
-            myth = "",
+            myth =
+            "{time:02:32} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:02:40} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:03:16} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:03:24} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:37} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:38} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:01:22} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:03,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370960} \n" ..
+            "{time:02:11,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:51,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:443328} \n" ..
+            "{time:00:56,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:359816} \n" ..
+            "{time:01:18,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:01:25,SCS:1230529:1} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:32,SCS:1230529:2} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
+            "{time:00:42,SCS:1230529:2} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..
+            "{time:00:50,SCS:1230529:2} - " .. GetUnitName("player", false) .. " {spell:363534} \n" ..
+            "{time:01:06,SCS:1230529:2} - " .. GetUnitName("player", false) .. " {spell:359816} \n"
+            ,
             hero =
             "{time:02:30} - " .. GetUnitName("player", false) .. " {spell:370537} \n" ..
             "{time:02:35} - " .. GetUnitName("player", false) .. " {spell:370564} \n" ..

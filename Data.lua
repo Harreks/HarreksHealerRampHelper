@@ -7,6 +7,7 @@ ns.specs = {
     [105] = "RestoDruid"
 }
 
+--https://wago.tools/db2/DungeonEncounter
 ns.bosses = {
     [3129] = {
         name = "Plexus Sentinel",
