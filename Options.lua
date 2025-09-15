@@ -1,7 +1,7 @@
 --Namespace
 local _, ns = ...
 local next = next
-local version = "1.2.5"
+local version = "1.2.6"
 local defaultOptions = {
     ['testing'] = {
         ['testMode'] = false
