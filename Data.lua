@@ -86,7 +86,9 @@ ns.bosses = {
     [3134] = {
         name = "Nexus King Salhadaar",
         phases = {
-            ["myth"] = {},
+            ["myth"] = {
+                [1] = "SAR:1228265:1"
+            },
             ["hero"] = {
                 [1] = "SAR:1228265:1"
             }
@@ -95,7 +97,13 @@ ns.bosses = {
     [3135] = {
         name = "Dimensius the All-Devouring",
         phases = {
-            ["myth"] = {},
+            ["myth"] = {
+                [1] = "SAR:1228367:1",
+                [2] = "SAA:1246143:1",
+                [3] = "SAR:1246143:1",
+                [4] = "SAA:1246143:2",
+                [5] = "SAA:1245292:1"
+            },
             ["hero"] = {
                 [1] = "SAR:1228367:1",
                 [2] = "SAA:1246143:1",
