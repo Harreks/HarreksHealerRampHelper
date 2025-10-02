@@ -4,7 +4,10 @@ local _, ns = ...
 ns.specs = {
     [1468] = "Preservation",
     [256] = "Discipline",
-    [105] = "RestoDruid"
+    [257] = "HolyPriest",
+    [105] = "RestoDruid",
+    [264] = "RestoShaman",
+    [65] = "HolyPaladin"
 }
 
 --https://wago.tools/db2/DungeonEncounter

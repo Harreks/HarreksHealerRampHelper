@@ -1,5 +1,5 @@
 ## Interface: 110200
-## Version: 1.2.6
+## Version: 2.0.0
 ## Title: Harreks Healer Ramp Helper
 ## IconTexture: Interface/Addons/HarreksHealerRampHelper/HRH_logo
 ## Notes: Automatic reminder creator for ramp healers in raid
@@ -11,10 +11,20 @@ libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 libs\AceGUI-3.0\AceGUI-3.0.xml
 libs\AceConfig-3.0\AceConfig-3.0.xml
 
-ClassData\RestoDruid.lua
-ClassData\Discipline.lua
-ClassData\Preservation.lua
+Config\RestoDruid.lua
+Config\Discipline.lua
+Config\HolyPriest.lua
+Config\HolyPaladin.lua
+Config\Preservation.lua
+Config\RestoShaman.lua
+Config\Data.lua
 
-Data.lua
-Options.lua
-HarreksHealerRampHelper.lua
+Defaults\Preservation.lua
+
+App\Options.lua
+App\Assignments.lua
+App\Display.lua
+App\Format.lua
+App\Timers.lua
+
+main.lua

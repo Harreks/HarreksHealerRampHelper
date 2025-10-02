@@ -17,9 +17,17 @@ ns['Discipline'] = {
         }
     },
     ['cooldowns'] = {
+        [62618] = 'Barrier'
+    },
+    ['utilities'] = {
+        [33206] = 'Pain Suppression',
+        [73325] = 'Leap of Faith',
+        [32375] = 'Mass Dispel'
+    },
+    ['ramps'] = {
         [472433] = 'Evangelism',
         [421453] = 'Ultimate Penitence',
-        [62618] = 'Barrier'
+        [194509] = 'Double Radiance'
     }
 }
 
@@ -104,78 +112,6 @@ ns['Discipline']['rampTypes'] = function()
                 ['icon'] = 136224,
                 ['offset'] = 0
             }
-        },
-        ['Barrier'] = {
-            {
-                ['text'] = 'Barrier Soon',
-                ['icon'] = 253400,
-                ['offset'] = 3,
-                ['showTimer'] = true
-            },
-            {
-                ['text'] = 'Barrier',
-                ['icon'] = 253400,
-                ['offset'] = 0
-            }
         }
     }
 end
-
-ns['Discipline']['defaultAssignments'] = {
-    [3129] = {
-        name = "Plexus Sentinel",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3131] = {
-        name = "Loomithar",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3130] = {
-        name = "Soulbinder Naazindhri",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3132] = {
-        name = "Forgeweaver Araz",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3122] = {
-        name = "The Soul Hunters",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3133] = {
-        name = "Fractillus",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3134] = {
-        name = "Nexus King Salhadaar",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    },
-    [3135] = {
-        name = "Dimensius the All-Devouring",
-        assignments = {
-            myth = "",
-            hero = ""
-        }
-    }
-}
