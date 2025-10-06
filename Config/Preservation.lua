@@ -25,7 +25,9 @@ ns['Preservation'] = {
         [374968] = 'Time Spiral',
         [374227] = 'Zephyr',
         [370665] = 'Rescue',
-        [406735] = 'Spatial Paradox'
+        [406735] = 'Spatial Paradox',
+        [363916] = 'Obsidian Scales',
+        [374348] = 'Renewing Blaze'
     },
     ['ramps'] = {
         [370537] = 'Stasis',

@@ -23,8 +23,8 @@ ns.specSupported = false
 ns.fightAssignments = {}
 ns.frames = {}
 --Timer Frames
-ns.phaseEvents = CreateFrame("Frame") --Frame that handles phase changing
-ns.phaseEvents:SetScript("OnEvent", function()
+ns.phaseEventsTrigger = CreateFrame("Frame") --Frame that handles phase changing
+ns.phaseEventsTrigger:SetScript("OnEvent", function()
     local _, subEvent, _, _, _, _, _, _, _, _, _, spellId = CombatLogGetCurrentEventInfo()
     for phase, trigger in pairs(ns.phaseTimerData.phaseActivations) do
         if subEvent == ns.phaseEvents[trigger.event] and spellId == tonumber(trigger.spell) then

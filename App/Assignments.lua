@@ -189,7 +189,7 @@ function ns:SetupPhaseChanges(phaseChangesTable)
     for phase, trigger in pairs(phaseChangesTable) do
         phaseChanges[phase] = ns:FormatPhaseChangeString(trigger)
     end
-    ns.phaseEvents:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    ns.phaseEventsTrigger:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     ns.phaseTimerData.phaseActivations = phaseChanges
 end
 
