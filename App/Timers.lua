@@ -17,7 +17,7 @@ function ns:StopTimer()
         ns.mainTimerData.runningTimer:Cancel()
         ns.mainTimerData.timerRunning = false
     end
-    ns.phaseEvents:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    ns.phaseEventsTrigger:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     if ns.phaseTimerData.timerRunning and ns.phaseTimerData.runningTimer ~= nil then
         ns.phaseTimerData.runningTimer:Cancel()
         ns.phaseTimerData.timerRunning = false
