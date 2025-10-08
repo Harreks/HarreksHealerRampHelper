@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110205
 ## Version: 2.0.2
 ## Title: Harreks Healer Ramp Helper
 ## IconTexture: Interface/Addons/HarreksHealerRampHelper/HRH_logo
