@@ -1,6 +1,6 @@
 --Namespace
 local _, ns = ...
-local version = "2.0.2"
+local version = "2.0.3"
 local defaultOptions = {
     ['testing'] = {
         ['testMode'] = false

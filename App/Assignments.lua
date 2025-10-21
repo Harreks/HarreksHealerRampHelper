@@ -85,7 +85,7 @@ function ns:SetupTimings(event, encounterId, difficultyId)
                     :gsub("\n%s*\n", "\n")
         local activeNote = ns:ConvertNoteToTable(mrtNoteText, ns.specName, encounterId, ns.difficulties[difficultyId]['slug'])
         for spell, timings in pairs(activeNote) do
-            local rampType = ns[ns.specName]['cooldowns'][tonumber(spell)]
+            local rampType = ns[ns.specName]['cooldowns'][tonumber(spell)] or ns[ns.specName]['ramps'][tonumber(spell)] or ns[ns.specName]['utilities'][tonumber(spell)]
             if rampType then
                 local timingsString = ""
                 for _, time in pairs(timings) do
